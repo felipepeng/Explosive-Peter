@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💣 Pedro</title>
+<style>
+  :root { --bg1:#1e3c72; --bg2:#2a5298; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; font-family:'Trebuchet MS', system-ui, sans-serif; }
+
+  body {
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    display:flex; align-items:center; justify-content:center;
+    user-select:none;
+  }
+
+  /* ---- camada que treme / quebra ---- */
+  #scene {
+    position:fixed; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:36px;
+    transition: filter .3s;
+  }
+  .shake { animation: shake .35s infinite; }
+  @keyframes shake {
+    0%,100%{ transform:translate(0,0) rotate(0); }
+    20%{ transform:translate(-8px,4px) rotate(-1deg); }
+    40%{ transform:translate(7px,-5px) rotate(1deg); }
+    60%{ transform:translate(-6px,6px) rotate(-1.2deg); }
+    80%{ transform:translate(6px,-4px) rotate(.8deg); }
+  }
+  /* terremoto violento */
+  .quake { animation: quake .09s infinite; }
+  @keyframes quake {
+    0%{ transform:translate(0,0) rotate(0) scale(1.01); }
+    10%{ transform:translate(-22px,12px) rotate(-2deg); }
+    20%{ transform:translate(20px,-16px) rotate(2.2deg); }
+    30%{ transform:translate(-26px,-10px) rotate(-1.6deg); }
+    40%{ transform:translate(24px,14px) rotate(2deg) scale(1.02); }
+    50%{ transform:translate(-18px,18px) rotate(-2.4deg); }
+    60%{ transform:translate(22px,-12px) rotate(1.8deg); }
+    70%{ transform:translate(-24px,8px) rotate(-2deg); }
+    80%{ transform:translate(18px,16px) rotate(2.3deg) scale(1.01); }
+    90%{ transform:translate(-20px,-14px) rotate(-1.5deg); }
+    100%{ transform:translate(0,0) rotate(0); }
+  }
+
+  h1 { color:#fff; font-size:clamp(20px,4vw,34px); letter-spacing:1px; text-shadow:0 2px 6px rgba(0,0,0,.4); }
+
+  /* ---- timer ---- */
+  #timer {
+    font-size:clamp(48px,12vw,120px);
+    font-weight:900; color:#fff;
+    text-shadow:0 0 20px rgba(255,80,80,.8), 0 4px 10px rgba(0,0,0,.5);
+    font-variant-numeric:tabular-nums;
+  }
+  #timer.warn { color:#ff5252; animation:pulse .5s infinite alternate; }
+  @keyframes pulse { from{ transform:scale(1);} to{ transform:scale(1.18);} }
+
+  /* ---- o PEDRO ---- */
+  #pedro {
+    position:relative; width:120px; height:200px;
+    transition: opacity .15s;
+  }
+  #pedro.bob { animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-10px);} }
+
+  .part { position:absolute; }
+  /* cabeça */
+  .head {
+    width:70px; height:70px; left:25px; top:0;
+    background:radial-gradient(circle at 35% 30%, #ffe0b2, #f4b06a);
+    border-radius:50%;
+    border:3px solid #c98a3d;
+  }
+  .eye { position:absolute; width:11px; height:14px; background:#222; border-radius:50%; top:26px; }
+  .eye.l{ left:18px; } .eye.r{ right:18px; }
+  .eye::after{ content:""; position:absolute; width:4px; height:4px; background:#fff; border-radius:50%; top:2px; left:2px; }
+  .mouth{ position:absolute; width:26px; height:13px; border-bottom:4px solid #7a3e10; border-radius:0 0 26px 26px; left:22px; top:46px; }
+  .cheek{ position:absolute; width:12px; height:9px; background:#ff9d8a; border-radius:50%; opacity:.7; top:42px;}
+  .cheek.l{ left:8px;} .cheek.r{ right:8px;}
+  /* corpo */
+  .body {
+    width:64px; height:80px; left:28px; top:66px;
+    background:linear-gradient(#4caf50,#2e7d32);
+    border-radius:22px; border:3px solid #1b5e20;
+  }
+  .arm { width:18px; height:60px; background:#f4b06a; border:3px solid #c98a3d; border-radius:12px; top:74px; }
+  .arm.l{ left:8px; transform:rotate(18deg); transform-origin:top; }
+  .arm.r{ right:8px; transform:rotate(-18deg); transform-origin:top; }
+  .leg { width:20px; height:55px; background:#37474f; border:3px solid #263238; border-radius:10px; top:140px; }
+  .leg.l{ left:34px;} .leg.r{ right:34px;}
+  .name {
+    position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+    background:#fff; color:#2e7d32; font-weight:bold; padding:2px 12px;
+    border-radius:12px; font-size:15px; white-space:nowrap;
+    box-shadow:0 2px 6px rgba(0,0,0,.3);
+  }
+  .name::after{ content:""; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%);
+    border:6px solid transparent; border-top-color:#fff; }
+
+  #hint { color:#dbe6ff; font-size:14px; opacity:.8; }
+
+  /* ---- VINÍCIUS, O ESTOICO ---- */
+  #vinicius{
+    position:fixed; left:50%; top:50%; width:130px; height:215px;
+    transform: translate(125vw, -45%);
+    transition: transform 1.1s cubic-bezier(.18,.85,.25,1), filter .3s;
+    z-index:52;
+  }
+  #vinicius.enter{ transform: translate(64px, -45%); }
+  #vinicius.soot{ filter: brightness(.32) contrast(1.25) saturate(.6); }
+  .vpart{ position:absolute; }
+  .vhead{
+    width:72px; height:72px; left:29px; top:0;
+    background:radial-gradient(circle at 38% 32%, #f0d2b0, #d8a878);
+    border-radius:50%; border:3px solid #9c6b3a; z-index:2;
+  }
+  .vbrow{ position:absolute; width:18px; height:4px; background:#5a3a1a; border-radius:2px; top:22px; } /* sobrancelhas retas = sério */
+  .vbrow.l{ left:12px; } .vbrow.r{ right:12px; }
+  .veye{ position:absolute; width:14px; height:5px; background:#333; border-radius:3px; top:30px; } /* olhos meio fechados */
+  .veye.l{ left:14px; } .veye.r{ right:14px; }
+  .vmouth{ position:absolute; width:24px; height:4px; background:#7a3e10; border-radius:3px; left:24px; top:50px; } /* boca reta, imperturbável */
+  .beard{ position:absolute; width:64px; height:34px; left:4px; top:46px; background:#6b4a2a; border-radius:0 0 40px 40px; z-index:-1; }
+  .vrobe{
+    width:78px; height:120px; left:26px; top:64px;
+    background:linear-gradient(#5c6bc0,#311b92);
+    border-radius:18px 18px 14px 14px; border:3px solid #1a237e;
+  }
+  .varm{ width:20px; height:46px; background:#d8a878; border:3px solid #9c6b3a; border-radius:12px; top:96px; z-index:3; transition:transform .4s, top .4s; }
+  .varm.l{ left:22px; transform:rotate(58deg); }   /* braços cruzados = postura estoica */
+  .varm.r{ right:22px; transform:rotate(-58deg); }
+  .vname{
+    position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+    background:#311b92; color:#fff; font-weight:bold; padding:2px 12px;
+    border-radius:12px; font-size:14px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,.35);
+  }
+  .vname::after{ content:""; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%);
+    border:6px solid transparent; border-top-color:#311b92; }
+  .vbomb{ position:absolute; left:50%; top:104px; transform:translateX(-50%); font-size:30px; display:none; z-index:4; text-align:center; }
+  .vbomb .vcount{ display:block; font-size:15px; font-weight:900; color:#fff; margin-top:-4px; text-shadow:0 0 6px #ff5252; }
+  #vinicius.hold .vbomb{ display:block; }
+  #vinicius.hold .varm.r{ transform:rotate(-100deg); top:86px; }  /* estende o braço pra segurar a bomba */
+
+  #pedro.scared{ animation: scared .14s infinite; }
+  @keyframes scared{ 0%,100%{ transform:translateX(0);} 50%{ transform:translateX(-5px);} }
+
+  /* caixa de citação estoica */
+  #quote{
+    position:fixed; left:50%; bottom:8%; transform:translate(-50%,20px);
+    max-width:80vw; text-align:center;
+    background:rgba(20,20,40,.92); color:#e8eaff;
+    padding:14px 22px; border-radius:14px; border:1px solid #5c6bc0;
+    font-size:clamp(14px,2.4vw,20px); font-style:italic;
+    opacity:0; pointer-events:none; z-index:62;
+    transition:opacity .5s, transform .5s; box-shadow:0 8px 30px rgba(0,0,0,.5);
+  }
+  #quote.show{ opacity:1; transform:translate(-50%,0); }
+
+  /* ---- pavio / bomba aparece no fim ---- */
+  .bomb-fuse{ position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-size:24px; display:none; }
+
+  /* ---- canvas das partículas ---- */
+  #fx { position:fixed; inset:0; pointer-events:none; z-index:50; }
+  /* poeira/fumaça (atrás das partículas) */
+  #dust { position:fixed; inset:0; pointer-events:none; z-index:45; }
+  /* ondas de choque */
+  #shock { position:fixed; inset:0; pointer-events:none; z-index:48; }
+  .ring {
+    position:fixed; border-radius:50%; border:6px solid rgba(255,255,255,.85);
+    transform:translate(-50%,-50%) scale(0); opacity:.9;
+    animation: ring var(--d,.8s) ease-out forwards;
+  }
+  @keyframes ring {
+    to { transform:translate(-50%,-50%) scale(var(--s,18)); opacity:0; border-width:1px; }
+  }
+
+  /* ---- flash branco ---- */
+  #flash { position:fixed; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:40; }
+  #flash.boom { animation: flash .6s ease-out; }
+  @keyframes flash { 0%{opacity:0;} 8%{opacity:1;} 100%{opacity:0;} }
+
+  /* ---- estado final destruído ---- */
+  #destroyed {
+    position:fixed; inset:0; display:none; flex-direction:column;
+    align-items:center; justify-content:center; gap:18px;
+    background:#0a0a0a; z-index:60; color:#ff5252;
+    opacity:1; transition:opacity .6s;
+  }
+  #destroyed h2 { font-size:clamp(28px,7vw,64px); text-shadow:0 0 18px rgba(255,0,0,.6); }
+  #destroyed p { color:#aaa; font-size:15px; }
+  #destroyed button{
+    margin-top:8px; padding:12px 26px; font-size:16px; font-weight:bold;
+    background:#ff5252; color:#fff; border:none; border-radius:10px; cursor:pointer;
+    box-shadow:0 4px 0 #b71c1c; transition:.1s;
+  }
+  #destroyed button:active{ transform:translateY(3px); box-shadow:0 1px 0 #b71c1c; }
+
+  /* rachaduras SVG sobre tudo */
+  #cracks{ position:fixed; inset:0; pointer-events:none; z-index:55; opacity:0; transition:opacity .2s; }
+
+  /* ---- TELA GALÁCTICA + CRIPTÆON ---- */
+  #galaxy{
+    position:fixed; inset:0; display:none; z-index:80;
+    flex-direction:column; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at 50% 38%, #1a0b3a 0%, #0a0420 55%, #000 100%);
+    opacity:0; transition:opacity 1s; text-align:center; padding:20px;
+  }
+  #galaxy.show{ opacity:1; }
+  #stars{ position:absolute; inset:0; z-index:-1; }
+  .g-content{ position:relative; max-width:660px; color:#e8e0ff; }
+
+  .crypto-being{ position:relative; width:170px; height:170px; margin:0 auto 18px; perspective:600px; }
+  .coin{
+    position:absolute; inset:22px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff6c0, #ffd54f 42%, #c98a00 82%);
+    display:flex; align-items:center; justify-content:center;
+    font-size:64px; font-weight:900; color:#5a3a00;
+    box-shadow:0 0 40px 8px rgba(255,213,79,.7), inset 0 0 18px rgba(255,255,255,.6);
+    animation: coinspin 4.5s linear infinite, coinpulse 2.2s ease-in-out infinite;
+  }
+  @keyframes coinspin{ from{ transform:rotateY(0);} to{ transform:rotateY(360deg);} }
+  @keyframes coinpulse{
+    0%,100%{ box-shadow:0 0 40px 8px rgba(255,213,79,.7), inset 0 0 18px rgba(255,255,255,.6);}
+    50%{ box-shadow:0 0 75px 20px rgba(120,210,255,.85), inset 0 0 22px rgba(255,255,255,.85);}
+  }
+  .aura{ position:absolute; inset:0; border-radius:50%; border:2px solid rgba(150,120,255,.55); animation: aura 3s ease-out infinite; }
+  .aura.a2{ animation-delay:1.5s; border-color:rgba(120,210,255,.55); }
+  @keyframes aura{ 0%{ transform:scale(.65); opacity:.85;} 100%{ transform:scale(1.7); opacity:0;} }
+
+  #galaxy h2{ font-size:clamp(20px,4vw,30px); color:#ffd54f; text-shadow:0 0 18px rgba(255,213,79,.6); margin-bottom:8px; letter-spacing:1px; }
+  .g-sub{ color:#b9aee0; font-size:15px; line-height:1.5; margin-bottom:22px; }
+  .g-sub b{ color:#ffd54f; }
+
+  #ask-form{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  #ask-input{
+    flex:1 1 320px; max-width:420px; padding:12px 16px; border-radius:10px;
+    border:1px solid #6a5acd; background:rgba(255,255,255,.06); color:#fff; font-size:16px; outline:none;
+  }
+  #ask-input:focus{ border-color:#ffd54f; box-shadow:0 0 0 2px rgba(255,213,79,.25); }
+  #ask-form button{
+    padding:12px 22px; border-radius:10px; border:none; cursor:pointer;
+    background:linear-gradient(#ffd54f,#f0a500); color:#3a2500; font-weight:bold; font-size:16px;
+  }
+  #answer{
+    margin-top:24px; min-height:32px; font-size:clamp(16px,3vw,24px); color:#fff; line-height:1.4;
+    opacity:0; transform:translateY(10px); transition:opacity .6s, transform .6s;
+  }
+  #answer.show{ opacity:1; transform:translateY(0); }
+  #answer b{ color:#ffd54f; font-size:1.35em; text-shadow:0 0 14px rgba(255,213,79,.85); }
+  .thinking{ color:#9aa0ff; font-style:italic; }
+
+  #galaxy .rebuild{
+    margin-top:32px; background:none; border:1px solid #6a5acd; color:#b9aee0;
+    padding:8px 18px; border-radius:8px; cursor:pointer; font-size:13px;
+  }
+  #galaxy .rebuild:hover{ border-color:#ffd54f; color:#ffd54f; }
+</style>
+</head>
+<body>
+
+  <div id="scene">
+    <h1 id="title">Pedro tem pouco tempo… ⏳</h1>
+    <div id="timer">10</div>
+
+    <div id="pedro" class="bob">
+      <div class="name">Pedro</div>
+      <div class="bomb-fuse">🧨</div>
+      <div class="part head">
+        <div class="eye l"></div>
+        <div class="eye r"></div>
+        <div class="cheek l"></div>
+        <div class="cheek r"></div>
+        <div class="mouth"></div>
+      </div>
+      <div class="part body"></div>
+      <div class="part arm l"></div>
+      <div class="part arm r"></div>
+      <div class="part leg l"></div>
+      <div class="part leg r"></div>
+    </div>
+
+    <div id="hint">Não dá pra salvar ele. 😬</div>
+  </div>
+
+  <!-- O RIVAL: Vinícius, o Estoico (fica fora da #scene pra não tremer no twist) -->
+  <div id="vinicius">
+    <div class="vname">Vinícius, o Estoico</div>
+    <div class="vpart vhead">
+      <div class="vbrow l"></div><div class="vbrow r"></div>
+      <div class="veye l"></div><div class="veye r"></div>
+      <div class="vmouth"></div>
+      <div class="beard"></div>
+    </div>
+    <div class="vpart vrobe"></div>
+    <div class="vpart varm l"></div>
+    <div class="vpart varm r"></div>
+    <div class="vbomb">🧨<span class="vcount"></span></div>
+  </div>
+
+  <div id="quote"></div>
+
+  <canvas id="dust"></canvas>
+  <canvas id="fx"></canvas>
+  <div id="shock"></div>
+  <div id="flash"></div>
+  <svg id="cracks" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <g stroke="rgba(0,0,0,.55)" stroke-width=".4" fill="none">
+      <path d="M50 50 L20 0 M50 50 L80 5 M50 50 L0 35 M50 50 L100 45 M50 50 L15 100 M50 50 L60 100 M50 50 L95 90 M50 50 L40 0"/>
+      <path d="M20 0 L10 30 M80 5 L70 25 M0 35 L25 60 M100 45 L75 65 M15 100 L30 70 M60 100 L55 75 M95 90 L70 80"/>
+    </g>
+  </svg>
+
+  <div id="destroyed">
+    <h2>💥 BOOM 💥</h2>
+    <p>O Pedro explodiu… mas algo o puxa para além do void. ✨</p>
+  </div>
+
+  <!-- TELA GALÁCTICA: só aparece quando o Pedro explode -->
+  <div id="galaxy">
+    <canvas id="stars"></canvas>
+    <div class="g-content">
+      <div class="crypto-being">
+        <div class="aura"></div>
+        <div class="aura a2"></div>
+        <div class="coin">₵</div>
+      </div>
+      <h2>CRIPTÆON — o Ser-Criptomoeda</h2>
+      <p class="g-sub">O ser mais poderoso do universo. O Pedro explodiu e transcendeu até aqui.<br>
+        Faça <b>uma pergunta</b> sobre a vida, a verdade e o universo.</p>
+      <form id="ask-form">
+        <input id="ask-input" placeholder="Ex.: qual o sentido de tudo?" autocomplete="off" />
+        <button type="submit">Perguntar</button>
+      </form>
+      <div id="answer"></div>
+      <button class="rebuild" onclick="location.reload()">↻ renascer / reconstruir tudo</button>
+    </div>
+  </div>
+
+<script>
+(function(){
+  const COUNT_FROM = 10;
+  const timerEl   = document.getElementById('timer');
+  const pedro     = document.getElementById('pedro');
+  const scene     = document.getElementById('scene');
+  const flash     = document.getElementById('flash');
+  const cracks    = document.getElementById('cracks');
+  const destroyed = document.getElementById('destroyed');
+  const fuse      = document.querySelector('.bomb-fuse');
+  const shock     = document.getElementById('shock');
+  const canvas    = document.getElementById('fx');
+  const ctx       = canvas.getContext('2d');
+  const dust      = document.getElementById('dust');
+  const dctx      = dust.getContext('2d');
+
+  const title    = document.getElementById('title');
+  const hint     = document.getElementById('hint');
+  const vinicius = document.getElementById('vinicius');
+  const vbomb    = document.querySelector('.vbomb');
+  const vcount   = document.querySelector('.vbomb .vcount');
+  const quoteEl  = document.getElementById('quote');
+
+  function resize(){
+    canvas.width = dust.width = innerWidth;
+    canvas.height = dust.height = innerHeight;
+  }
+  resize(); addEventListener('resize', resize);
+
+  function setTitle(s){ title.textContent = s; }
+  function showQuote(s){ quoteEl.textContent = s; quoteEl.classList.add('show'); }
+  const STOIC = [
+    '"A dor é apenas uma opinião." — Vinícius',
+    '"Não são as coisas que nos perturbam, mas o que pensamos delas." — Vinícius',
+    '"O obstáculo é o caminho." — Vinícius',
+    '"Suporta e renuncia." — Vinícius',
+    '"Tenho poder sobre minha mente, não sobre os eventos." — Vinícius',
+    '"A morte sorri para todos; ao estoico, ela sorri de volta." — Vinícius'
+  ];
+  const randStoic = ()=> STOIC[(Math.random()*STOIC.length)|0];
+
+  // ---- contagem regressiva ----
+  let t = COUNT_FROM;
+  timerEl.textContent = t;
+  const tick = setInterval(()=>{
+    t--;
+    if(t <= 0){ clearInterval(tick); timerEl.textContent = 0; decide(); return; }
+    timerEl.textContent = t;
+    if(t <= 3){
+      timerEl.classList.add('warn');
+      scene.classList.add('shake');
+      fuse.style.display = 'block';
+    }
+  }, 1000);
+
+  // ---- partículas ----
+  let particles = [];
+  let dustParts = [];
+  let running = false;
+  const COLORS = ['#ff5252','#ff9800','#ffeb3b','#fff','#4caf50','#f4b06a','#37474f','#ffd54f','#ff7043'];
+
+  function spawnExplosion(cx, cy, n, power){
+    n = n||500; power = power||18;
+    for(let i=0;i<n;i++){
+      const a = Math.random()*Math.PI*2;
+      const sp = 2 + Math.random()*power;
+      particles.push({
+        x:cx, y:cy,
+        vx:Math.cos(a)*sp, vy:Math.sin(a)*sp - 5,
+        size:2 + Math.random()*11,
+        color:COLORS[(Math.random()*COLORS.length)|0],
+        life:1, decay:0.004 + Math.random()*0.011,
+        rot:Math.random()*6, vrot:(Math.random()-.5)*0.5,
+        shape: Math.random()<.5?'rect':'circ'
+      });
+    }
+  }
+
+  // nuvem de poeira/fumaça
+  function spawnDust(cx, cy, n){
+    n = n||60;
+    for(let i=0;i<n;i++){
+      const a = Math.random()*Math.PI*2;
+      const sp = Math.random()*6;
+      const g = 120 + (Math.random()*70|0);
+      dustParts.push({
+        x:cx + (Math.random()-.5)*60, y:cy + (Math.random()-.5)*60,
+        vx:Math.cos(a)*sp, vy:Math.sin(a)*sp - 1.5,
+        r:20 + Math.random()*70, grow:0.4 + Math.random()*0.9,
+        life:1, decay:0.003 + Math.random()*0.006,
+        g
+      });
+    }
+  }
+
+  // onda de choque (anel)
+  function shockwave(cx, cy, size, dur){
+    const ring = document.createElement('div');
+    ring.className = 'ring';
+    ring.style.left = cx+'px'; ring.style.top = cy+'px';
+    ring.style.width = ring.style.height = '40px';
+    ring.style.setProperty('--s', size||18);
+    ring.style.setProperty('--d', (dur||0.8)+'s');
+    shock.appendChild(ring);
+    setTimeout(()=>ring.remove(), (dur||0.8)*1000+50);
+  }
+
+  function animate(){
+    // poeira primeiro (camada de trás)
+    dctx.clearRect(0,0,dust.width,dust.height);
+    for(const d of dustParts){
+      d.vy += 0.02; d.vx*=0.985; d.vy*=0.985;
+      d.x += d.vx; d.y += d.vy;
+      d.r += d.grow; d.life -= d.decay;
+      if(d.life<=0) continue;
+      const al = Math.max(0, d.life)*0.5;
+      const grd = dctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.r);
+      grd.addColorStop(0, `rgba(${d.g},${d.g},${d.g},${al})`);
+      grd.addColorStop(1, `rgba(${d.g},${d.g},${d.g},0)`);
+      dctx.fillStyle = grd;
+      dctx.beginPath(); dctx.arc(d.x,d.y,d.r,0,Math.PI*2); dctx.fill();
+    }
+    dustParts = dustParts.filter(d=>d.life>0);
+
+    // partículas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(const p of particles){
+      p.vy += 0.2;          // gravidade
+      p.vx *= 0.99;
+      p.x += p.vx; p.y += p.vy;
+      p.rot += p.vrot;
+      p.life -= p.decay;
+      if(p.life <= 0) continue;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      if(p.shape==='rect') ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+      else { ctx.beginPath(); ctx.arc(0,0,p.size/2,0,Math.PI*2); ctx.fill(); }
+      ctx.restore();
+    }
+    particles = particles.filter(p=>p.life>0 && p.y<canvas.height+60);
+
+    if(particles.length || dustParts.length){ requestAnimationFrame(animate); }
+    else { running=false; ctx.clearRect(0,0,canvas.width,canvas.height); dctx.clearRect(0,0,dust.width,dust.height); }
+  }
+  function ensureLoop(){ if(!running){ running=true; animate(); } }
+
+  // ---- o destino do Pedro: 50% explode, 50% Vinícius salva ----
+  function decide(){
+    timerEl.classList.remove('warn');
+    scene.classList.remove('shake');
+    if(Math.random() < 0.6){
+      explode();          // 60%: ninguém salvou
+    } else {
+      saveByVinicius();   // 40%: o rival estoico surge
+    }
+  }
+
+  // Vinícius entra, toma a bomba e a segura sem piscar
+  function saveByVinicius(){
+    setTitle('Vinícius, o Estoico, surge… 🗿');
+    hint.textContent = 'Imperturbável, ele caminha até a bomba.';
+    pedro.classList.remove('bob');
+    vinicius.classList.add('enter');
+    setTimeout(()=>{
+      fuse.style.display = 'none';      // tira a bomba do Pedro
+      vinicius.classList.add('hold');   // bomba vai pra mão dele
+      hint.textContent = 'Ele segura a bomba na mão… e não pisca.';
+      let mt = 3; vcount.textContent = mt;
+      const mini = setInterval(()=>{
+        mt--;
+        if(mt <= 0){ clearInterval(mini); resolveStoic(); return; }
+        vcount.textContent = mt;
+      }, 800);
+    }, 1250);
+  }
+
+  // TWIST: a bomba na mão dele ou falha, ou explode — e ele NÃO se abala
+  function resolveStoic(){
+    if(Math.random() < 0.55){
+      // a bomba falha — final tranquilo
+      vcount.textContent = '·';
+      setTitle('Pedro foi salvo. 🌿');
+      hint.textContent = 'Vinícius nem se deu ao trabalho de reagir.';
+      showQuote('"A bomba falhou. O que é externo não me toca." — Vinícius');
+      setTimeout(()=>{ vinicius.classList.remove('hold'); }, 900);
+      pedro.classList.add('bob');
+    } else {
+      stoicBlast();
+    }
+  }
+
+  // a bomba explode NO Vinícius — o mundo treme, ele não
+  function stoicBlast(){
+    const r = vinicius.getBoundingClientRect();
+    const cx = r.left + r.width*0.5;
+    const cy = r.top + r.height*0.45;
+
+    flash.classList.add('boom');
+    spawnExplosion(cx, cy, 440, 18);
+    spawnDust(cx, cy, 80);
+    shockwave(cx, cy, 20, 0.9);
+    shockwave(cx, cy, 12, 0.6);
+    ensureLoop();
+    rainDebris(16);
+
+    // o MUNDO treme (só a cena) — Vinícius, fixo e fora dela, fica parado
+    scene.classList.add('quake');
+    scene.style.filter = 'brightness(.6)';
+    setTimeout(()=> scene.classList.remove('quake'), 900);
+
+    vinicius.classList.remove('hold');
+    vinicius.classList.add('soot');   // coberto de fuligem, intacto por dentro
+    pedro.classList.add('scared');    // Pedro em pânico
+
+    setTitle('A bomba explodiu. Vinícius, não. 🗿');
+    hint.textContent = 'Coberto de fuligem, sem mover um músculo.';
+    showQuote(randStoic());
+  }
+
+  // ---- a explosão ----
+  function explode(){
+    const r = pedro.getBoundingClientRect();
+    const cx = r.left + r.width/2;
+    const cy = r.top + r.height/2;
+
+    setTitle('Ninguém salvou o Pedro. 💥');
+    // some o pedro
+    pedro.style.opacity = 0;
+    scene.classList.remove('shake');
+
+    // BOOM principal
+    flash.classList.add('boom');
+    spawnExplosion(cx, cy, 600, 20);
+    spawnDust(cx, cy, 90);
+    shockwave(cx, cy, 26, 0.9);
+    shockwave(cx, cy, 16, 0.6);
+    ensureLoop();
+
+    // TERREMOTO violento e longo
+    document.body.classList.add('quake');
+    cracks.style.opacity = 1;
+    scene.style.filter = 'blur(1.5px) brightness(.5)';
+
+    // explosões secundárias em cadeia, espalhadas pela tela
+    const W = innerWidth, H = innerHeight;
+    let bursts = 9;
+    const chain = setInterval(()=>{
+      const bx = Math.random()*W, by = H*0.25 + Math.random()*H*0.6;
+      spawnExplosion(bx, by, 220, 16);
+      spawnDust(bx, by, 45);
+      shockwave(bx, by, 14, 0.7);
+      flash.classList.remove('boom'); void flash.offsetWidth; flash.classList.add('boom');
+      rainDebris(8);
+      if(--bursts<=0) clearInterval(chain);
+    }, 280);
+
+    // escombros caindo (pedaços da própria UI)
+    rainDebris(30);
+
+    // poeira ambiente subindo do chão durante o caos
+    let dustTicks = 14;
+    const dustTimer = setInterval(()=>{
+      spawnDust(Math.random()*W, H-10, 18);
+      ensureLoop();
+      if(--dustTicks<=0) clearInterval(dustTimer);
+    }, 200);
+
+    // tela final destruída (depois do show toda terminar)
+    setTimeout(()=>{
+      document.body.classList.remove('quake');
+      destroyed.style.display = 'flex';
+    }, 3600);
+
+    // …e então o Pedro é puxado para a tela galáctica do CRIPTÆON
+    setTimeout(enterGalaxy, 6200);
+  }
+
+  // ============ TELA GALÁCTICA + CRIPTÆON ============
+  const galaxy   = document.getElementById('galaxy');
+  const starsC   = document.getElementById('stars');
+  const sctx     = starsC.getContext('2d');
+  const askForm  = document.getElementById('ask-form');
+  const askInput = document.getElementById('ask-input');
+  const answerEl = document.getElementById('answer');
+  let stars = [], starAnim = false;
+
+  function enterGalaxy(){
+    destroyed.style.opacity = 0;                      // o void some
+    setTimeout(()=> destroyed.style.display = 'none', 600);
+    galaxy.style.display = 'flex';
+    requestAnimationFrame(()=> galaxy.classList.add('show'));
+    initStars(); startStars();
+    setTimeout(()=> askInput.focus(), 900);
+  }
+
+  function initStars(){
+    starsC.width = innerWidth; starsC.height = innerHeight;
+    stars = [];
+    for(let i=0;i<240;i++){
+      stars.push({
+        x:Math.random()*starsC.width, y:Math.random()*starsC.height,
+        z:0.2 + Math.random()*1.1, r:0.3 + Math.random()*1.6, tw:Math.random()*Math.PI*2
+      });
+    }
+  }
+  function startStars(){ if(!starAnim){ starAnim = true; animStars(); } }
+  function animStars(){
+    sctx.clearRect(0,0,starsC.width,starsC.height);
+    for(const s of stars){
+      s.tw += 0.05; s.y += s.z*0.15;
+      if(s.y > starsC.height){ s.y = 0; s.x = Math.random()*starsC.width; }
+      sctx.globalAlpha = 0.4 + Math.sin(s.tw)*0.4;
+      sctx.fillStyle = '#fff';
+      sctx.beginPath(); sctx.arc(s.x, s.y, s.r, 0, Math.PI*2); sctx.fill();
+    }
+    sctx.globalAlpha = 1;
+    if(galaxy.style.display !== 'none') requestAnimationFrame(animStars);
+    else starAnim = false;
+  }
+  addEventListener('resize', ()=>{ if(galaxy.style.display !== 'none') initStars(); });
+
+  // a sabedoria do Ser
+  const APHORISMS = [
+    'A verdade é volátil. Compre na baixa, segure na alta.',
+    'O universo é um livro-razão imutável: cada ato seu é um bloco eterno.',
+    'Quem não controla suas chaves, não controla seu destino.',
+    'A vida é um HODL longo. Ignore o ruído do void.',
+    'Tudo é energia — e energia tem taxa de transação.',
+    'A morte é apenas um fork da consciência.',
+    'Minere significado, não moedas.',
+    'O medo e a ganância movem as estrelas como movem os mercados.'
+  ];
+  function divine(q){
+    const t = (q||'').toLowerCase().trim();
+    if(t === '') return 'O silêncio também é uma pergunta. E a resposta, mesmo assim, é <b>42</b>.';
+    if(/sentido|vida|universo|verdade|tudo|existir|exist|propósito|proposito|por que|porqu|alma|deus|amor/.test(t)){
+      return 'A resposta para a Vida, a Verdade e o Universo é… <b>42</b>.';
+    }
+    return APHORISMS[(Math.random()*APHORISMS.length)|0];
+  }
+
+  askForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const q = askInput.value;
+    answerEl.innerHTML = '<span class="thinking">CRIPTÆON computa através de 7,5 milhões de eras…</span>';
+    answerEl.classList.remove('show'); void answerEl.offsetWidth; answerEl.classList.add('show');
+    setTimeout(()=>{
+      answerEl.innerHTML = divine(q);
+      answerEl.classList.remove('show'); void answerEl.offsetWidth; answerEl.classList.add('show');
+    }, 2200);
+    askInput.value = '';
+  });
+
+  // pedaços de "site" caindo
+  function rainDebris(qtd){
+    qtd = qtd||22;
+    const chunks = ['💥','🔥','💀','🧨','⚙️','🩹','📉','🟥','🟩','⬛','🪨','🧱','💢','☄️'];
+    for(let i=0;i<qtd;i++){
+      const d = document.createElement('div');
+      d.textContent = chunks[(Math.random()*chunks.length)|0];
+      d.style.cssText = `position:fixed;z-index:58;font-size:${18+Math.random()*30}px;
+        left:${Math.random()*100}vw;top:-50px;pointer-events:none;
+        transition:transform ${1.2+Math.random()*1.2}s ease-in, opacity .4s;`;
+      document.body.appendChild(d);
+      requestAnimationFrame(()=>{
+        d.style.transform = `translateY(${innerHeight+120}px) rotate(${(Math.random()-.5)*720}deg)`;
+      });
+      setTimeout(()=>d.remove(), 2600);
+    }
+  }
+})();
+</script>
+</body>
+</html>

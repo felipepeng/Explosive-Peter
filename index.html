@@ -340,6 +340,150 @@
     padding:8px 18px; border-radius:8px; cursor:pointer; font-size:13px;
   }
   #galaxy .rebuild:hover{ border-color:#ffd54f; color:#ffd54f; }
+
+  /* ============ MICHA DOS MARES ============ */
+
+  /* chuva (canvas próprio, atrás dos personagens) */
+  #rain{ position:fixed; inset:0; pointer-events:none; z-index:47; }
+
+  /* pavio morrendo: pisca e encolhe antes de apagar */
+  .bomb-fuse.dying{ animation: fuseDie 2.4s ease-in forwards; }
+  @keyframes fuseDie{
+    0%{ opacity:1; transform:translateX(-50%) scale(1); }
+    12%{ opacity:.35; } 20%{ opacity:1; }
+    36%{ opacity:.3; transform:translateX(-50%) scale(.85); } 48%{ opacity:.9; }
+    70%{ opacity:.25; transform:translateX(-50%) scale(.6); } 82%{ opacity:.6; }
+    100%{ opacity:0; transform:translateX(-50%) scale(.3); }
+  }
+
+  /* ---- MICHAS (estética Steve / Minecraft, tudo em CSS) ---- */
+  #michas{
+    position:fixed; left:50%; top:50%; width:104px; height:208px;
+    transform: translate(-140vw,-42%);
+    transition: transform 1.8s linear;
+    z-index:54;
+  }
+  #michas.enter{ transform: translate(-150px,-42%); }   /* centro-esquerda, à esq. do Pedro */
+  .mpart{ position:absolute; image-rendering:pixelated; }
+  .mname{
+    position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+    background:#1f8a8a; color:#fff; font-weight:bold; padding:2px 12px; border-radius:6px;
+    font-size:14px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,.35); z-index:6;
+  }
+  .mname::after{ content:""; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%);
+    border:6px solid transparent; border-top-color:#1f8a8a; }
+
+  /* cabeça cúbica */
+  .m-head{ width:60px; height:60px; left:22px; top:0; background:#b07a4f;
+    border:2px solid #5e3b1f; box-shadow:inset -8px -8px 0 rgba(0,0,0,.12); z-index:2; }
+  .m-hair{ position:absolute; left:-2px; top:-2px; width:60px; height:18px; background:#3a2615;
+    border:2px solid #251407; box-shadow:inset 0 -3px 0 rgba(0,0,0,.25); }
+  .m-hair::before{ content:""; position:absolute; left:-2px; top:18px; width:7px; height:16px; background:#3a2615; }
+  .m-hair::after{ content:""; position:absolute; right:-2px; top:18px; width:7px; height:16px; background:#3a2615; }
+  .m-brow{ position:absolute; width:14px; height:4px; background:#3a2615; top:20px; }
+  .m-brow.l{ left:8px; } .m-brow.r{ right:8px; }
+  .m-eye{ position:absolute; width:13px; height:9px; background:#fff; top:25px; border:1px solid #2a1c10; }
+  .m-eye.l{ left:8px; } .m-eye.r{ right:8px; }
+  .m-eye::after{ content:""; position:absolute; top:0; width:6px; height:9px; background:#3b5bbf; }
+  .m-eye.l::after{ right:0; } .m-eye.r::after{ left:0; }
+  .m-nose{ position:absolute; left:50%; transform:translateX(-50%); top:34px; width:8px; height:8px; background:#8a5d35; }
+  .m-mouth{ position:absolute; left:50%; transform:translateX(-50%); top:46px; width:26px; height:5px; background:#5b3a1e; }
+
+  /* tronco + membros retangulares */
+  .m-body{ width:52px; height:58px; left:26px; top:60px; background:#1f8a8a;
+    border:2px solid #0d5d5d; box-shadow:inset -6px 0 0 rgba(0,0,0,.12); z-index:1; }
+  .m-arm{ width:16px; height:58px; top:60px; background:#b07a4f; border:2px solid #5e3b1f;
+    transition:transform .3s, top .3s; transform-origin:50% 7px; z-index:2; }
+  .m-arm::before{ content:""; position:absolute; left:-2px; right:-2px; top:-2px; height:20px;
+    background:#1f8a8a; border:2px solid #0d5d5d; }   /* manga da camisa */
+  .m-arm.l{ left:8px; } .m-arm.r{ right:8px; }
+  .m-leg{ width:18px; height:56px; top:118px; background:#3b3b8f; border:2px solid #232357;
+    transition:transform .3s; transform-origin:50% 6px; z-index:1; }
+  .m-leg.l{ left:28px; } .m-leg.r{ right:28px; }
+
+  /* animação de caminhada (membros alternados) */
+  #michas.walk .m-arm.l, #michas.walk .m-leg.r{ animation: mstepA .5s ease-in-out infinite; }
+  #michas.walk .m-arm.r, #michas.walk .m-leg.l{ animation: mstepB .5s ease-in-out infinite; }
+  @keyframes mstepA{ 0%,100%{ transform:rotate(20deg);} 50%{ transform:rotate(-20deg);} }
+  @keyframes mstepB{ 0%,100%{ transform:rotate(-20deg);} 50%{ transform:rotate(20deg);} }
+
+  /* gesto de arremesso: braço direito estende pra frente */
+  #michas.throw .m-arm.r{ transform:rotate(-118deg); top:84px; }
+  #michas.throw .m-trident{ display:none; }
+
+  /* balão de fala (mesmo sistema visual do JP) */
+  .mc-bubble{
+    position:absolute; top:-96px; left:50%; transform:translate(-50%,8px) scale(.85);
+    background:#fff; color:#222; padding:10px 14px; border-radius:12px; font-size:14px;
+    width:236px; white-space:normal; text-align:center; line-height:1.3;
+    box-shadow:0 4px 14px rgba(0,0,0,.4); opacity:0; pointer-events:none; transition:.35s; z-index:7;
+  }
+  .mc-bubble b{ color:#0d8a8a; }
+  .mc-bubble::after{ content:""; position:absolute; bottom:-8px; left:46%; border:8px solid transparent; border-top-color:#fff; }
+  #michas.say .mc-bubble{ opacity:1; transform:translate(-50%,0) scale(1); }
+
+  /* ---- tridente brilhante (CSS) ---- */
+  .trident{ position:relative; width:30px; height:104px; }
+  .trident > div{ position:absolute; }
+  .tr-shaft{ left:12px; top:28px; width:6px; height:74px;
+    background:linear-gradient(#26a69a,#0c5d57); box-shadow:0 0 6px #5ff, 0 0 12px rgba(45,221,200,.6); }
+  .tr-base{ left:5px; top:26px; width:20px; height:6px; background:#23c2b5; box-shadow:0 0 8px #5ff; }
+  .tr-prong{ top:0; width:6px; height:30px; background:linear-gradient(#8ff8ef,#23c2b5); box-shadow:0 0 8px #5ff; }
+  .tr-prong.c{ left:12px; height:34px; }
+  .tr-prong.l{ left:4px; } .tr-prong.r{ right:4px; }
+  .tr-prong::after{ content:""; position:absolute; top:-6px; left:0; width:6px; height:8px;
+    background:#ffd54f; box-shadow:0 0 6px #ffd54f; clip-path:polygon(50% 0,100% 100%,0 100%); }
+
+  /* tridente na mão direita do Michas */
+  .m-trident{ position:absolute; right:-14px; top:74px; z-index:5; transform:rotate(8deg) scale(.92); }
+  /* tridente voando (arremesso) */
+  #fly-trident{ position:fixed; left:0; top:0; z-index:56; display:none;
+    transform:translate(-50%,-50%); will-change:transform; }
+
+  /* ---- raio em zigue-zague ---- */
+  #bolt{ position:fixed; inset:0; pointer-events:none; z-index:57; opacity:0; }
+  #bolt.flash{ animation: boltflash .6s ease-out; }
+  @keyframes boltflash{ 0%{opacity:0;} 8%{opacity:1;} 30%{opacity:.4;} 48%{opacity:1;} 72%{opacity:.3;} 100%{opacity:0;} }
+  #bolt polyline{ fill:none; stroke-linejoin:round; stroke-linecap:round; }
+  #bolt .b-glow{ stroke:#ffe14d; stroke-width:9; filter:drop-shadow(0 0 8px #fff36b); opacity:.85; }
+  #bolt .b-core{ stroke:#fff; stroke-width:3; }
+
+  /* flash rápido (0.1s) do raio */
+  #flash.zap{ animation: zap .26s ease-out; }
+  @keyframes zap{ 0%{opacity:0;} 4%{opacity:1;} 42%{opacity:1;} 100%{opacity:0;} }
+
+  /* Pedro tomou dano */
+  #pedro.hurt{ animation: hurt .55s linear; }
+  @keyframes hurt{
+    0%,100%{ transform:translate(0); filter:none; }
+    8%{ transform:translate(7px,-2px); filter:brightness(2.4) sepia(1) hue-rotate(-15deg); }
+    20%{ transform:translate(-7px,1px); filter:brightness(.4); }
+    34%{ transform:translate(6px,2px); filter:brightness(2) sepia(1); }
+    48%{ transform:translate(-5px,-1px); filter:brightness(.5); }
+    64%{ transform:translate(4px,1px); filter:brightness(1.6); }
+    82%{ transform:translate(-3px,0); }
+  }
+  #pedro.zapped{ filter:brightness(.38) contrast(1.3) saturate(.7); transform:translateY(6px) rotate(6deg); transition:filter .5s, transform .5s; }
+
+  /* ---- TELA FINAL: MICHA DOS MARES (molde do #eliminated) ---- */
+  #micha-end{
+    position:fixed; inset:0; display:none; flex-direction:column;
+    align-items:center; justify-content:center; gap:14px;
+    background:radial-gradient(ellipse at 50% 35%, #0b2a3a 0%, #07301f 55%, #02060a 100%);
+    z-index:72; color:#ffe7a3; text-align:center; padding:20px;
+    opacity:0; transition:opacity .8s;
+  }
+  #micha-end.show{ opacity:1; }
+  #micha-end h2{ font-size:clamp(28px,7vw,60px); color:#ffd54f; letter-spacing:2px;
+    text-shadow:0 0 18px rgba(255,213,79,.6), 0 0 40px rgba(75,224,208,.4); }
+  #micha-end p{ color:#9fe6c8; font-size:16px; max-width:520px; line-height:1.5; }
+  #micha-end p b{ color:#4be0d0; }
+  #micha-end button{ margin-top:10px; padding:12px 26px; font-size:16px; font-weight:bold;
+    background:#1f8a8a; color:#fff; border:none; border-radius:10px; cursor:pointer; box-shadow:0 4px 0 #0d5d5d; }
+  #micha-end button:active{ transform:translateY(3px); box-shadow:0 1px 0 #0d5d5d; }
+  .micha-stage{ display:flex; align-items:flex-end; gap:26px; margin-bottom:6px; }
+  .micha-figure{ position:relative; width:104px; height:208px; transform:scale(.92); }
+  .deco-trident{ transform:scale(1.3) rotate(10deg); filter:drop-shadow(0 0 10px #4be0d0); }
 </style>
 </head>
 <body>
@@ -411,6 +555,7 @@
   <div id="quote"></div>
 
   <canvas id="dust"></canvas>
+  <canvas id="rain"></canvas>
   <canvas id="fx"></canvas>
   <div id="shock"></div>
   <div id="flash"></div>
@@ -453,6 +598,67 @@
     </div>
   </div>
 
+  <!-- MICHAS: o rei dos mines (chega na chuva, com o pavio apagado) -->
+  <div id="michas">
+    <div class="mname">Michas</div>
+    <div class="mc-bubble">Eu <b>Michas</b>, rei dos mines, deixo minha marca no fundo do Pedro!!!</div>
+    <div class="mpart m-head">
+      <div class="m-hair"></div>
+      <div class="m-brow l"></div><div class="m-brow r"></div>
+      <div class="m-eye l"></div><div class="m-eye r"></div>
+      <div class="m-nose"></div>
+      <div class="m-mouth"></div>
+    </div>
+    <div class="mpart m-body"></div>
+    <div class="mpart m-arm l"></div>
+    <div class="mpart m-arm r"></div>
+    <div class="mpart m-leg l"></div>
+    <div class="mpart m-leg r"></div>
+    <div class="m-trident trident">
+      <div class="tr-prong l"></div><div class="tr-prong c"></div><div class="tr-prong r"></div>
+      <div class="tr-base"></div><div class="tr-shaft"></div>
+    </div>
+  </div>
+
+  <!-- tridente arremessado -->
+  <div id="fly-trident" class="trident">
+    <div class="tr-prong l"></div><div class="tr-prong c"></div><div class="tr-prong r"></div>
+    <div class="tr-base"></div><div class="tr-shaft"></div>
+  </div>
+
+  <!-- raio em zigue-zague -->
+  <svg id="bolt" preserveAspectRatio="none">
+    <polyline class="b-glow" points=""></polyline>
+    <polyline class="b-core" points=""></polyline>
+  </svg>
+
+  <!-- TELA FINAL: MICHA DOS MARES -->
+  <div id="micha-end">
+    <div class="micha-stage">
+      <div class="micha-figure">
+        <div class="mpart m-head">
+          <div class="m-hair"></div>
+          <div class="m-brow l"></div><div class="m-brow r"></div>
+          <div class="m-eye l"></div><div class="m-eye r"></div>
+          <div class="m-nose"></div>
+          <div class="m-mouth"></div>
+        </div>
+        <div class="mpart m-body"></div>
+        <div class="mpart m-arm l"></div>
+        <div class="mpart m-arm r"></div>
+        <div class="mpart m-leg l"></div>
+        <div class="mpart m-leg r"></div>
+      </div>
+      <div class="trident deco-trident">
+        <div class="tr-prong l"></div><div class="tr-prong c"></div><div class="tr-prong r"></div>
+        <div class="tr-base"></div><div class="tr-shaft"></div>
+      </div>
+    </div>
+    <h2>🔱 MICHA DOS MARES 🔱</h2>
+    <p>Deixou sua marca no <b>fundo do Pedro</b>.</p>
+    <button onclick="location.reload()">🟦 Recomeçar</button>
+  </div>
+
 <script>
 (function(){
   const COUNT_FROM = 10;
@@ -477,10 +683,16 @@
   const quoteEl  = document.getElementById('quote');
   const jp         = document.getElementById('jp');
   const eliminated = document.getElementById('eliminated');
+  const michas     = document.getElementById('michas');
+  const flyTrident = document.getElementById('fly-trident');
+  const bolt       = document.getElementById('bolt');
+  const michaEnd   = document.getElementById('micha-end');
+  const rainC      = document.getElementById('rain');
+  const rctx       = rainC.getContext('2d');
 
   function resize(){
-    canvas.width = dust.width = innerWidth;
-    canvas.height = dust.height = innerHeight;
+    canvas.width = dust.width = rainC.width = innerWidth;
+    canvas.height = dust.height = rainC.height = innerHeight;
   }
   resize(); addEventListener('resize', resize);
 
@@ -608,12 +820,14 @@
     timerEl.classList.remove('warn');
     scene.classList.remove('shake');
     const r = Math.random();
-    if(r < 0.40){
-      saveByVinicius();   // 40%: o rival estoico surge
-    } else if(r < 0.70){
-      dudThenJP();        // 30%: a bomba falha… mas JP from the South chega
+    if(r < 0.30){
+      saveByVinicius();   // 30%: o rival estoico surge
+    } else if(r < 0.52){
+      dudThenJP();        // 22%: a bomba falha… mas JP from the South chega
+    } else if(r < 0.76){
+      michaEvent();       // 24%: começa a chover e Micha dos Mares emerge
     } else {
-      explode();          // 30%: ninguém salvou
+      explode();          // 24%: ninguém salvou
     }
   }
 
@@ -866,6 +1080,176 @@
       });
       setTimeout(()=>d.remove(), 2600);
     }
+  }
+
+  // ============ MICHA DOS MARES ============
+
+  // ---- chuva (canvas próprio, intensidade rampa em ~3.5s) ----
+  let drops = [], rainActive = false, rainStart = 0, rainRAF = false;
+  function startRain(){
+    rainActive = true; rainStart = performance.now();
+    if(!rainRAF){ rainRAF = true; rainTick(); }
+  }
+  function stopRain(){ rainActive = false; }   // deixa as gotas restantes caírem e limpa
+  function rainTick(){
+    rctx.clearRect(0,0,rainC.width,rainC.height);
+    const inten = rainActive ? Math.min(1,(performance.now()-rainStart)/3500) : 0;
+    if(rainActive){
+      const n = Math.ceil(inten*14);
+      for(let i=0;i<n;i++){
+        drops.push({ x:Math.random()*rainC.width, y:-20, len:12+Math.random()*18, sp:9+Math.random()*8 });
+      }
+    }
+    rctx.strokeStyle = 'rgba(180,205,255,.55)'; rctx.lineWidth = 1.6; rctx.lineCap = 'round';
+    for(const d of drops){
+      d.y += d.sp;
+      rctx.beginPath(); rctx.moveTo(d.x,d.y); rctx.lineTo(d.x-2,d.y+d.len); rctx.stroke();
+    }
+    drops = drops.filter(d=> d.y < rainC.height+30);
+    if(rainActive || drops.length){ requestAnimationFrame(rainTick); }
+    else { rainRAF = false; rctx.clearRect(0,0,rainC.width,rainC.height); }
+  }
+
+  // FASE 1→3: chuva começa, pavio apaga, Michas entra e fala
+  function michaEvent(){
+    setTitle('Nuvens pesadas se formam sobre o Pedro… 🌧️');
+    hint.textContent = 'Começa a chover.';
+    pedro.classList.remove('bob');
+    startRain();
+
+    // o pavio pisca, encolhe e apaga — com puffs de fumaça cinza
+    fuse.style.display = 'block';
+    fuse.classList.add('dying');
+    const r0 = pedro.getBoundingClientRect();
+    const fx0 = r0.left + r0.width/2, fy0 = r0.top - 6;
+    let puffs = 6;
+    const puffTimer = setInterval(()=>{
+      spawnDust(fx0, fy0, 6); ensureLoop();
+      if(--puffs<=0) clearInterval(puffTimer);
+    }, 380);
+    setTimeout(()=>{ fuse.textContent = '💨'; }, 2200);
+    setTimeout(()=>{ fuse.style.display = 'none'; fuse.classList.remove('dying'); fuse.textContent = '🧨'; }, 2900);
+
+    // FASE 2: Michas emerge da esquerda, andando
+    setTimeout(()=>{
+      setTitle('Algo emerge das profundezas… 🔱');
+      hint.textContent = '';
+      michas.classList.add('walk','enter');
+    }, 3600);
+
+    // a chuva para quando ele chega no centro-esquerda
+    setTimeout(()=>{
+      stopRain();
+      michas.classList.remove('walk');
+    }, 5400);
+
+    // FASE 3: Michas fala (mesmo sistema de balão dos outros eventos)
+    setTimeout(()=>{ michas.classList.add('say'); }, 5900);
+
+    // FASE 4: ataque
+    setTimeout(michaThrow, 9000);
+  }
+
+  // FASE 4: arremesso do tridente + raio
+  function michaThrow(){
+    michas.classList.remove('say');
+    michas.classList.add('throw');          // braço estende pra frente, esconde o tridente da mão
+    setTimeout(()=>{
+      const mr = michas.getBoundingClientRect();
+      const pr = pedro.getBoundingClientRect();
+      const sx = mr.left + mr.width*0.9,  sy = mr.top + mr.height*0.45;
+      const ex = pr.left + pr.width*0.5,  ey = pr.top + pr.height*0.45;
+      const dx = ex - sx, dy = ey - sy;
+
+      flyTrident.style.display = 'block';
+      flyTrident.style.left = sx + 'px';
+      flyTrident.style.top  = sy + 'px';
+      flyTrident.style.transition = 'none';
+      flyTrident.style.transform = 'translate(-50%,-50%) rotate(0deg)';
+      void flyTrident.offsetWidth;          // reflow pra reiniciar a transição
+      flyTrident.style.transition = 'transform .55s cubic-bezier(.4,.1,.7,1)';
+      flyTrident.style.transform =
+        `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) rotate(900deg) scale(.9)`;
+
+      setTimeout(()=>{ flyTrident.style.display = 'none'; lightningStrike(pr); }, 560);
+    }, 350);
+  }
+
+  // o raio cai do topo no Pedro
+  function lightningStrike(pr){
+    const px = pr.left + pr.width*0.5, py = pr.top + pr.height*0.45;
+
+    // flash branco rápido (0.1s)
+    flash.classList.remove('boom','zap'); void flash.offsetWidth; flash.classList.add('zap');
+    setTimeout(()=> flash.classList.remove('zap'), 300);
+
+    drawBolt(px, 0, px, py);
+
+    // Pedro reage ao impacto
+    pedro.classList.add('hurt');
+    spawnExplosion(px, py, 120, 12);
+    shockwave(px, py, 8, 0.5);
+    ensureLoop();
+    document.body.classList.add('shake');
+    setTimeout(()=> document.body.classList.remove('shake'), 500);
+    setTimeout(()=>{ pedro.classList.remove('hurt'); pedro.classList.add('zapped'); }, 560);
+
+    setTitle('⚡ O raio do rei dos mines atingiu o Pedro.');
+
+    // FASE 5: fade pra tela final
+    setTimeout(michaFinal, 2200);
+  }
+
+  // raio em zigue-zague (duas polylines: brilho + núcleo)
+  function drawBolt(x1,y1,x2,y2){
+    bolt.setAttribute('width', innerWidth);
+    bolt.setAttribute('height', innerHeight);
+    bolt.setAttribute('viewBox', `0 0 ${innerWidth} ${innerHeight}`);
+    const segs = 10, pts = [];
+    for(let i=0;i<=segs;i++){
+      const tt = i/segs;
+      const jitter = (i===0||i===segs) ? 0 : (Math.random()-.5)*60;
+      pts.push(`${(x1+(x2-x1)*tt+jitter).toFixed(1)},${(y1+(y2-y1)*tt).toFixed(1)}`);
+    }
+    const points = pts.join(' ');
+    bolt.querySelectorAll('polyline').forEach(p=> p.setAttribute('points', points));
+    bolt.classList.remove('flash'); void bolt.offsetWidth; bolt.classList.add('flash');
+    setTimeout(()=> bolt.classList.remove('flash'), 620);
+  }
+
+  // FASE 5: tela final personalizada + confete de diamante/pixels
+  function michaFinal(){
+    michaEnd.style.display = 'flex';
+    requestAnimationFrame(()=> michaEnd.classList.add('show'));
+    pixelConfetti();
+  }
+
+  function pixelConfetti(){
+    const cols = ['#4be0d0','#ffd54f','#2e7d32','#1565c0','#7e57c2','#b9f2ff'];
+    let waves = 12;
+    const iv = setInterval(()=>{
+      for(let i=0;i<10;i++){
+        const d = document.createElement('div');
+        d.style.cssText = `position:fixed;z-index:74;left:${Math.random()*100}vw;top:-40px;
+          pointer-events:none;transition:transform ${1.4+Math.random()*1.4}s linear, opacity .5s;`;
+        if(Math.random() < 0.35){
+          d.textContent = '💎';
+          d.style.fontSize = (16 + Math.random()*16) + 'px';
+        } else {
+          const s = 8 + Math.random()*12;
+          const c = cols[(Math.random()*cols.length)|0];
+          d.style.width = d.style.height = s + 'px';
+          d.style.background = c;
+          d.style.boxShadow = '0 0 6px ' + c;
+        }
+        document.body.appendChild(d);
+        requestAnimationFrame(()=>{
+          d.style.transform = `translateY(${innerHeight+120}px) rotate(${(Math.random()-.5)*720}deg)`;
+        });
+        setTimeout(()=> d.remove(), 3200);
+      }
+      if(--waves<=0) clearInterval(iv);
+    }, 350);
   }
 })();
 </script>

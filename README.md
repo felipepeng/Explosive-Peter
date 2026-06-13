@@ -30,9 +30,10 @@ xdg-open index.html
 
 | Resultado | Chance | O que rola |
 |---|---|---|
-| 🗿 **Vinícius salva** | **40%** | O rival estoico surge e assume a bomba. |
-| 🤠 **A bomba falha + JP** | **30%** | O pavio apaga… mas JP from the South chega pra terminar o serviço. |
-| 💥 **Pedro explode** | **30%** | Explosão completa: partículas, poeira, ondas de choque e um terremoto que despedaça o site. |
+| 🗿 **Vinícius salva** | **30%** | O rival estoico surge e assume a bomba. |
+| 🤠 **A bomba falha + JP** | **22%** | O pavio apaga… mas JP from the South chega pra terminar o serviço. |
+| 🔱 **Micha dos Mares** | **24%** | Começa a chover, o pavio apaga e o rei dos mines emerge pra fulminar o Pedro com um raio. |
+| 💥 **Pedro explode** | **24%** | Explosão completa: partículas, poeira, ondas de choque e um terremoto que despedaça o site. |
 
 ## 🗿 Vinícius, o Estoico
 
@@ -50,6 +51,17 @@ Quando a bomba **falha**, o Pedro acha que escapou… mas pouco depois um pistol
 Então saca o **revólver** (desenhado em CSS, com clarão de disparo, coice e fumaça), dá o tiro — e o Pedro tomba com os olhos em **✕ ✕**. Fim de linha para o último Mantuani.
 
 > ⚠️ Como nesse caminho a bomba **não** explode, ele leva a uma tela de eliminação faroeste própria — e **não** ao CRIPTÆON.
+
+## 🔱 Micha dos Mares
+
+O **rei dos mines**, com a cara do Steve do Minecraft — tudo desenhado em CSS, bem quadradão e pixelado. O evento dele tem 5 fases:
+
+1. **Chuva** — gotas começam a cair e vão engrossando ao longo de ~4s, enquanto o pavio 🧨 do Pedro **pisca, encolhe e apaga** soltando puffs de fumaça cinza.
+2. **Chegada** — com o pavio morto, **Michas** entra andando pela esquerda (braços e pernas alternando no passo), carregando um **tridente brilhante** na mão. A chuva para quando ele estaciona no centro-esquerda.
+3. **Fala** — ele se apresenta:
+   > *"Eu Michas, rei dos mines, deixo minha marca no fundo do Pedro!!!"*
+4. **Ataque** — Michas arremessa o tridente, que voa girando até o Pedro; no impacto, um **raio** cai do topo da tela (flash branco + zigue-zague amarelo/branco animado) e o Pedro **leva o dano**.
+5. **Tela final** — fade para um desfecho próprio em **azul-escuro, verde e dourado** (clima Minecraft), com a sprite do Michas, o tridente decorativo e **confete de diamantes e pixels** caindo.
 
 ## 🪙 CRIPTÆON, o Ser-Criptomoeda
 

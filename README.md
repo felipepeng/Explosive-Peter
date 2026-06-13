@@ -1,5 +1,7 @@
 # 💣 Explosive Peter
 
+### 🎮 [**Jogar agora →**](https://felipepeng.github.io/Explosive-Peter/)
+
 Uma página interativa de arquivo único (`index.html`) — sem dependências, sem build, sem nada pra instalar. É só abrir no navegador.
 
 O **Pedro** está no centro da tela com um cronômetro regressivo. Quando o tempo acaba, o destino dele é decidido na sorte… e o caos começa.
@@ -19,7 +21,7 @@ open index.html
 xdg-open index.html
 ```
 
-> 💡 Dá pra hospedar grátis no **GitHub Pages** (*Settings → Pages → Branch: `main` → `/root`*) e jogar direto pelo link.
+> 💡 Também já está no ar via **GitHub Pages**: **https://felipepeng.github.io/Explosive-Peter/**
 
 ## 🎬 O que acontece
 

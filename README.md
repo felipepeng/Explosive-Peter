@@ -28,12 +28,15 @@ xdg-open index.html
 1. **Contagem regressiva (10s)** — nos últimos 3 segundos o número fica vermelho, a tela começa a tremer e um pavio 🧨 aparece no Pedro.
 2. **Aos 0 segundos, a sorte decide:**
 
+Cada caminho tem a **mesma chance — 20%**:
+
 | Resultado | Chance | O que rola |
 |---|---|---|
-| 🗿 **Vinícius salva** | **30%** | O rival estoico surge e assume a bomba. |
-| 🤠 **A bomba falha + JP** | **22%** | O pavio apaga… mas JP from the South chega pra terminar o serviço. |
-| 🔱 **Micha dos Mares** | **24%** | Começa a chover, o pavio apaga e o rei dos mines emerge pra fulminar o Pedro com um raio. |
-| 💥 **Pedro explode** | **24%** | Explosão completa: partículas, poeira, ondas de choque e um terremoto que despedaça o site. |
+| 🗿 **Vinícius salva** | **20%** | O rival estoico surge e assume a bomba. |
+| 🤠 **A bomba falha + JP** | **20%** | O pavio apaga… mas JP from the South chega pra terminar o serviço. |
+| 🔱 **Micha dos Mares** | **20%** | Começa a chover, o pavio apaga e o rei dos mines emerge pra fulminar o Pedro com um raio. |
+| ⚔️ **Guerra de todos contra todos** | **20%** | Todos os personagens se enfrentam num combate estilo anime… até o **Rei Labubu** descer e resetar o universo. |
+| 💥 **Pedro explode** | **20%** | Explosão completa: partículas, poeira, ondas de choque e um terremoto que despedaça o site. |
 
 ## 🗿 Vinícius, o Estoico
 
@@ -41,6 +44,8 @@ O maior rival do Pedro. Imperturbável. Quando ele aparece, **não solta a bomba
 
 - **~55%** — a bomba **falha** (dud). Pedro salvo, Vinícius nem reage.
 - **~45%** — a bomba **explode nele**. O mundo inteiro treme… **mas o Vinícius, não.** Sai coberto de fuligem, intacto, e solta uma frase estoica enquanto o Pedro entra em pânico.
+
+Nos dois finais, ele encerra com uma citação estoica e um **botão de recomeçar**.
 
 ## 🤠 JP from the South
 
@@ -62,6 +67,21 @@ O **rei dos mines**, com a cara do Steve do Minecraft — tudo desenhado em CSS,
    > *"Eu Michas, rei dos mines, deixo minha marca no fundo do Pedro!!!"*
 4. **Ataque** — Michas arremessa o tridente, que voa girando até o Pedro; no impacto, um **raio** cai do topo da tela (flash branco + zigue-zague amarelo/branco animado) e o Pedro **leva o dano**.
 5. **Tela final** — fade para um desfecho próprio em **azul-escuro, verde e dourado** (clima Minecraft), com a sprite do Michas, o tridente decorativo e **confete de diamantes e pixels** caindo.
+
+## ⚔️ A Guerra de Todos Contra Todos + 👑 Felipe, o Rei Labubu
+
+O grande crossover. **Todos** os personagens chegam ao mesmo tempo e a coisa vira guerra: **JP** e **Michas** vêm pela morte do Pedro, e o **Vinícius** se junta ao Pedro pra enfrentá-los — inimigos à esquerda, aliados à direita, cada um falando na sua vez.
+
+Então começa o combate, com tudo que um bom **embate de anime** tem direito:
+
+- **Linhas de velocidade** estilo mangá ao fundo;
+- **auras de ki** coloridas em cada lutador;
+- **palavras de impacto** explodindo no choque (`ドン!`, `GOLPE!`, `クラッシュ`, `IMPACTO!`…);
+- fundo escuro e dramático, tela tremendo, partículas pra todo lado.
+
+Mas, antes da luta acabar, uma **luz desce do alto**: **Felipe, o Rei Labubu** — orelhas pontudas, dentinhos serrilhados e coroa dourada, tudo em CSS. Ele congela a batalha e **reseta o universo**.
+
+No lugar do caos nasce um **Universo Puro**: num amanhecer épico, **Pedro, Vinícius, JP e Michas** reaparecem lado a lado, agora **todos amigos** — sem bombas, sem tridentes, sem balas. Só paz (e confete de corações). 💗
 
 ## 🪙 CRIPTÆON, o Ser-Criptomoeda
 

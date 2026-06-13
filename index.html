@@ -241,6 +241,19 @@
     transition:opacity .5s, transform .5s; box-shadow:0 8px 30px rgba(0,0,0,.5);
   }
   #quote.show{ opacity:1; transform:translate(-50%,0); }
+  /* no desfecho do Vinícius a citação sobe pra dar lugar ao botão logo abaixo */
+  #quote.high{ bottom:22%; }
+
+  /* botão de reiniciar do desfecho do Vinícius (logo abaixo da citação) */
+  #stoic-restart{
+    position:fixed; left:50%; bottom:12%; transform:translate(-50%,12px);
+    padding:12px 26px; font-size:16px; font-weight:bold;
+    background:#311b92; color:#fff; border:none; border-radius:10px; cursor:pointer;
+    box-shadow:0 4px 0 #1a237e; z-index:63; opacity:0; pointer-events:none;
+    transition:opacity .5s, transform .5s;
+  }
+  #stoic-restart.show{ opacity:1; transform:translate(-50%,0); pointer-events:auto; }
+  #stoic-restart.show:active{ transform:translate(-50%,3px); box-shadow:0 1px 0 #1a237e; }
 
   /* ---- pavio / bomba aparece no fim ---- */
   .bomb-fuse{ position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-size:24px; display:none; }
@@ -484,6 +497,176 @@
   .micha-stage{ display:flex; align-items:flex-end; gap:26px; margin-bottom:6px; }
   .micha-figure{ position:relative; width:104px; height:208px; transform:scale(.92); }
   .deco-trident{ transform:scale(1.3) rotate(10deg); filter:drop-shadow(0 0 10px #4be0d0); }
+
+  /* ============ GUERRA DE TODOS CONTRA TODOS (tema anime) ============ */
+  /* posições de combate bem espaçadas: inimigos à esquerda, aliados à direita do Pedro */
+  #jp.battle{ transform: translate(-430px, -45%); }
+  #michas.battle{ transform: translate(-275px, -42%); }
+  #vinicius.battle{ transform: translate(135px, -45%); }   /* ao lado do Pedro, no time dele */
+
+  /* fundo dramático durante a luta */
+  body.battle-bg{ background:linear-gradient(135deg,#3a0d12,#10121f 60%,#06070d) !important; }
+
+  /* linhas de velocidade estilo mangá (atrás dos lutadores) */
+  #animefx{ position:fixed; inset:0; pointer-events:none; z-index:46; opacity:0; transition:opacity .35s;
+    background:repeating-conic-gradient(from 0deg at 50% 50%,
+      rgba(255,255,255,0) 0deg, rgba(255,255,255,0) 1.3deg,
+      rgba(255,255,255,.13) 1.5deg, rgba(255,255,255,0) 1.9deg);
+    -webkit-mask:radial-gradient(circle at 50% 50%, transparent 24%, #000 58%);
+            mask:radial-gradient(circle at 50% 50%, transparent 24%, #000 58%); }
+  #animefx.on{ opacity:1; animation: speedz .12s steps(2) infinite; }
+  @keyframes speedz{ 0%{ transform:scale(1) rotate(0); } 100%{ transform:scale(1.08) rotate(.5deg); } }
+
+  /* auras de ki por lutador (cada um sua cor) */
+  #pedro.fighting{ animation: kiPedro .42s infinite; }
+  @keyframes kiPedro{
+    0%{ transform:translateX(0); filter:drop-shadow(0 0 7px #4caf50); }
+    50%{ transform:translateX(-4px) scale(1.03); filter:drop-shadow(0 0 22px #69f0ae) drop-shadow(0 0 30px #2e7d32); }
+    100%{ transform:translateX(2px); filter:drop-shadow(0 0 7px #4caf50); }
+  }
+  #vinicius.ki{ animation: kiVini .5s infinite alternate; }
+  @keyframes kiVini{ from{ filter:drop-shadow(0 0 8px #7e57c2); } to{ filter:drop-shadow(0 0 24px #b388ff) drop-shadow(0 0 34px #4527a0); } }
+  #jp.ki{ animation: kiJP .46s infinite alternate; }
+  @keyframes kiJP{ from{ filter:drop-shadow(0 0 8px #ff5252); } to{ filter:drop-shadow(0 0 24px #ff8a80) drop-shadow(0 0 34px #b71c1c); } }
+  #michas.ki{ animation: kiMich .44s infinite alternate; }
+  @keyframes kiMich{ from{ filter:drop-shadow(0 0 8px #26c6da); } to{ filter:drop-shadow(0 0 24px #84ffff) drop-shadow(0 0 34px #006064); } }
+
+  /* palavras de impacto (mangá) */
+  .impact-word{ position:fixed; z-index:59; pointer-events:none; white-space:nowrap;
+    font-family:'Arial Black','Trebuchet MS',sans-serif; font-weight:900; font-style:italic; letter-spacing:1px;
+    color:#fff; -webkit-text-stroke:3px #15171f;
+    text-shadow:5px 5px 0 #e53935, -2px -2px 0 #15171f;
+    transform:translate(-50%,-50%) scale(.2) rotate(-10deg); opacity:0; }
+  .impact-word.go{ animation: popImpact .85s ease-out forwards; }
+  @keyframes popImpact{
+    0%{ transform:translate(-50%,-50%) scale(.2) rotate(-14deg); opacity:0; }
+    20%{ transform:translate(-50%,-50%) scale(1.18) rotate(-7deg); opacity:1; }
+    72%{ transform:translate(-50%,-50%) scale(1) rotate(-7deg); opacity:1; }
+    100%{ transform:translate(-50%,-50%) scale(1.32) rotate(-4deg); opacity:0; }
+  }
+
+  /* tudo congela quando o Rei Labubu desce */
+  .frozen{ animation-play-state:paused !important; filter:saturate(.5) brightness(.72) !important; transition:filter .9s; }
+
+  /* ============ FELIPE, O REI LABUBU (salvador) ============ */
+  #felipe{
+    position:fixed; left:50%; top:50%; width:150px; height:230px;
+    transform: translate(-50%,-168vh);
+    transition: transform 1.7s cubic-bezier(.2,.7,.3,1), filter .6s;
+    z-index:58; display:none;
+    filter: drop-shadow(0 0 26px rgba(255,224,138,.95));
+  }
+  #felipe.descend{ transform: translate(-50%,-104%); }   /* paira acima do centro */
+  .fpart{ position:absolute; }
+  /* aura sagrada / ki dourado do rei */
+  .f-aura{
+    position:absolute; left:50%; top:50%; width:230px; height:230px; transform:translate(-50%,-50%);
+    border-radius:50%; z-index:-2; pointer-events:none;
+    background:radial-gradient(circle, rgba(255,244,190,.6) 0%, rgba(255,214,90,.22) 46%, rgba(255,214,90,0) 70%);
+    animation: auraPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes auraPulse{
+    0%,100%{ transform:translate(-50%,-50%) scale(1); opacity:.85; }
+    50%{ transform:translate(-50%,-50%) scale(1.2); opacity:1; }
+  }
+  /* orelhas grandes pontudas (Labubu) */
+  .lb-ear{ position:absolute; top:-24px; width:34px; height:108px; z-index:1;
+    background:linear-gradient(180deg,#f4e3c5,#dec199);
+    clip-path:polygon(50% 0, 86% 46%, 70% 100%, 30% 100%, 14% 46%); }
+  .lb-ear::after{ content:""; position:absolute; left:50%; top:30px; transform:translateX(-50%);
+    width:46%; height:52px; background:#e7a9b0; clip-path:polygon(50% 0, 86% 46%, 70% 100%, 30% 100%, 14% 46%); }
+  .lb-ear.l{ left:22px; transform:rotate(-14deg); }
+  .lb-ear.r{ right:22px; transform:rotate(14deg); }
+  /* coroa dourada do rei */
+  .lb-crown{ position:absolute; left:50%; transform:translateX(-50%); top:16px; width:60px; height:34px; z-index:4;
+    background:linear-gradient(#ffe98a,#f0b800);
+    clip-path:polygon(0 100%,0 42%,18% 70%,34% 12%,50% 52%,66% 12%,82% 70%,100% 42%,100% 100%);
+    filter:drop-shadow(0 1px 2px rgba(120,80,0,.45)); }
+  .lb-crown::after{ content:""; position:absolute; left:50%; top:56%; transform:translateX(-50%);
+    width:8px; height:8px; background:#e53935; border-radius:50%; box-shadow:0 0 5px #ff5252; }
+  /* cabeça peluda arredondada */
+  .lb-head{ width:98px; height:92px; left:26px; top:36px; z-index:2;
+    background:radial-gradient(circle at 42% 34%, #fbf0d8, #e9d2a8 70%, #ddc090);
+    border:3px solid #c9a063; border-radius:48% 48% 46% 46% / 52% 52% 48% 48%;
+    box-shadow:inset 0 -8px 12px rgba(180,140,80,.25); }
+  /* olhos grandes redondos com brilho */
+  .lb-eye{ position:absolute; width:24px; height:26px; top:66px; border-radius:50%; z-index:3;
+    background:radial-gradient(circle at 38% 32%, #4a4a4a 0%, #111 62%); border:2px solid #2a1c10; }
+  .lb-eye.l{ left:46px; } .lb-eye.r{ right:46px; }
+  .lb-eye::after{ content:""; position:absolute; top:4px; left:5px; width:8px; height:8px; background:#fff; border-radius:50%; }
+  .lb-cheek{ position:absolute; width:14px; height:9px; background:#f0a9ad; border-radius:50%; top:94px; opacity:.8; z-index:3; }
+  .lb-cheek.l{ left:26px; } .lb-cheek.r{ right:26px; }
+  /* boca larga sorrindo com fileira de dentinhos serrilhados */
+  .lb-mouth{ position:absolute; left:50%; transform:translateX(-50%); top:98px; width:66px; height:24px; z-index:3;
+    background:#7a3b34; border:2px solid #5a2a25; border-radius:8px 8px 30px 30px; overflow:hidden; }
+  .lb-teeth{ position:absolute; left:0; top:0; width:100%; height:14px; background:#fff;
+    clip-path:polygon(0 0,100% 0,100% 30%,93% 100%,86% 30%,79% 100%,72% 30%,65% 100%,58% 30%,51% 100%,44% 30%,37% 100%,30% 30%,23% 100%,16% 30%,9% 100%,2% 30%,0 30%); }
+  /* manto real */
+  .lb-robe{ width:88px; height:98px; left:31px; top:126px; z-index:1;
+    background:linear-gradient(#b5122e,#7a0c20); border:3px solid #5a0c18; border-radius:16px 16px 14px 14px; }
+  .lb-robe::before{ content:""; position:absolute; left:50%; top:0; transform:translateX(-50%);
+    width:20px; height:100%; background:linear-gradient(#ffe08a,#f0c34d); }
+  .lb-robe::after{ content:""; position:absolute; left:-4px; right:-4px; top:-6px; height:15px;
+    background:#fff; border-radius:10px; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+  .lb-arm{ width:18px; height:58px; top:132px; z-index:0;
+    background:linear-gradient(#f4e3c5,#dec199); border:3px solid #c9a063; border-radius:12px; }
+  .lb-arm.l{ left:20px; transform:rotate(30deg); transform-origin:top; }
+  .lb-arm.r{ right:20px; transform:rotate(-30deg); transform-origin:top; }
+  .fname{ position:absolute; top:-34px; left:50%; transform:translateX(-50%);
+    background:linear-gradient(#ffe08a,#f0c34d); color:#5a3a00; font-weight:bold; padding:2px 12px;
+    border-radius:12px; font-size:14px; white-space:nowrap; box-shadow:0 2px 10px rgba(255,210,80,.6); z-index:6; }
+  .fname::after{ content:""; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%);
+    border:6px solid transparent; border-top-color:#f0c34d; }
+  .f-bubble{
+    position:absolute; top:-92px; left:50%; transform:translate(-50%,8px) scale(.85);
+    background:#fff; color:#222; padding:10px 14px; border-radius:12px; font-size:14px; white-space:nowrap;
+    box-shadow:0 4px 16px rgba(0,0,0,.3); opacity:0; pointer-events:none; transition:.4s; z-index:7;
+  }
+  .f-bubble b{ color:#d6a400; }
+  .f-bubble::after{ content:""; position:absolute; bottom:-8px; left:46%; border:8px solid transparent; border-top-color:#fff; }
+  #felipe.say .f-bubble{ opacity:1; transform:translate(-50%,0) scale(1); }
+
+  /* clarão sagrado do reset (cobre tudo) */
+  #pureflash{ position:fixed; inset:0; z-index:78; pointer-events:none; opacity:0;
+    background:radial-gradient(circle at 50% 40%, #fff 0%, #fff7e0 42%, #ffe9a8 100%); }
+  #pureflash.on{ animation: pureFlash 2s ease-out forwards; }
+  @keyframes pureFlash{ 0%{opacity:0;} 25%{opacity:1;} 60%{opacity:1;} 100%{opacity:0;} }
+
+  /* ---- TELA FINAL: UNIVERSO PURO (todos amigos) ---- */
+  #pure-end{
+    position:fixed; inset:0; display:none; flex-direction:column;
+    align-items:center; justify-content:center; gap:20px;
+    background:linear-gradient(180deg,#ff9e7d 0%,#ffd27d 40%,#bfe3ff 100%);
+    z-index:79; color:#4a3a5e; text-align:center; padding:20px;
+    opacity:0; transition:opacity 1.2s;
+  }
+  #pure-end.show{ opacity:1; }
+  #pure-end h2{ font-size:clamp(26px,6vw,54px); color:#fff; letter-spacing:2px;
+    text-shadow:0 0 18px rgba(255,180,90,.9), 0 3px 8px rgba(120,40,0,.35); }
+  #pure-end p{ color:#5a4a3a; font-size:16px; max-width:580px; line-height:1.55; }
+  #pure-end p b{ color:#c2410c; }
+  #pure-end button{ margin-top:6px; padding:12px 26px; font-size:16px; font-weight:bold;
+    background:linear-gradient(#ffd27d,#f0890c); color:#fff; border:none; border-radius:12px;
+    cursor:pointer; box-shadow:0 4px 0 #b8560a; }
+  #pure-end button:active{ transform:translateY(3px); box-shadow:0 1px 0 #b8560a; }
+
+  /* fileira de amigos (reaproveita as figuras CSS de cada personagem) */
+  .friend-row{ display:flex; align-items:flex-end; justify-content:center; gap:22px;
+    transform:scale(.66); transform-origin:center; }
+  .friend{ position:relative; flex:0 0 auto; }
+  .friend.f-pedro{ width:120px; height:200px; }
+  .friend.f-vini { width:130px; height:215px; }
+  .friend.f-mich { width:104px; height:208px; }
+  .friend.f-jp   { width:140px; height:220px; }
+  .friend.f-feli { width:150px; height:230px; }
+  .friend-heart{ position:absolute; top:-26px; left:50%; transform:translateX(-50%); font-size:22px;
+    z-index:8; animation: floatHeart 2.4s ease-in-out infinite; }
+  @keyframes floatHeart{ 0%,100%{ transform:translateX(-50%) translateY(0);} 50%{ transform:translateX(-50%) translateY(-9px);} }
+  /* no novo universo, até os ex-inimigos sorriem */
+  .friend.f-vini .vmouth{ width:26px; height:11px; left:23px; top:46px; background:transparent;
+    border:none; border-bottom:4px solid #7a3e10; border-radius:0 0 24px 24px; }
+  .friend.f-mich .m-mouth{ width:26px; height:10px; background:transparent;
+    border-bottom:5px solid #5b3a1e; border-radius:0 0 18px 18px; }
 </style>
 </head>
 <body>
@@ -553,6 +736,7 @@
   </div>
 
   <div id="quote"></div>
+  <button id="stoic-restart" onclick="location.reload()">🗿 Recomeçar</button>
 
   <canvas id="dust"></canvas>
   <canvas id="rain"></canvas>
@@ -659,6 +843,101 @@
     <button onclick="location.reload()">🟦 Recomeçar</button>
   </div>
 
+  <!-- linhas de velocidade (mangá) durante a luta -->
+  <div id="animefx"></div>
+
+  <!-- FELIPE, O REI LABUBU: desce do alto e reseta o universo -->
+  <div id="felipe">
+    <div class="fname">Felipe, o Rei Labubu</div>
+    <div class="f-aura"></div>
+    <div class="fpart lb-ear l"></div><div class="fpart lb-ear r"></div>
+    <div class="fpart lb-head"></div>
+    <div class="fpart lb-crown"></div>
+    <div class="fpart lb-eye l"></div><div class="fpart lb-eye r"></div>
+    <div class="fpart lb-cheek l"></div><div class="fpart lb-cheek r"></div>
+    <div class="fpart lb-mouth"><div class="lb-teeth"></div></div>
+    <div class="fpart lb-robe"></div>
+    <div class="fpart lb-arm l"></div><div class="fpart lb-arm r"></div>
+    <div class="f-bubble">Esta guerra acaba <b>agora</b>. Que o universo renasça! ✨</div>
+  </div>
+
+  <!-- clarão sagrado do reset -->
+  <div id="pureflash"></div>
+
+  <!-- TELA FINAL: UNIVERSO PURO (todos amigos) -->
+  <div id="pure-end">
+    <h2>🕊️ UNIVERSO PURO 🕊️</h2>
+    <div class="friend-row">
+      <!-- Pedro -->
+      <div class="friend f-pedro">
+        <div class="friend-heart">💗</div>
+        <div class="part head">
+          <div class="eye l"></div><div class="eye r"></div>
+          <div class="cheek l"></div><div class="cheek r"></div>
+          <div class="mouth"></div>
+        </div>
+        <div class="part body"></div>
+        <div class="part arm l"></div><div class="part arm r"></div>
+        <div class="part leg l"></div><div class="part leg r"></div>
+      </div>
+      <!-- Vinícius -->
+      <div class="friend f-vini">
+        <div class="friend-heart">💖</div>
+        <div class="vpart vhead">
+          <div class="vbrow l"></div><div class="vbrow r"></div>
+          <div class="veye l"></div><div class="veye r"></div>
+          <div class="vmouth"></div>
+          <div class="beard"></div>
+        </div>
+        <div class="vpart vrobe"></div>
+        <div class="vpart varm l"></div><div class="vpart varm r"></div>
+      </div>
+      <!-- Michas -->
+      <div class="friend f-mich">
+        <div class="friend-heart">💞</div>
+        <div class="mpart m-head">
+          <div class="m-hair"></div>
+          <div class="m-brow l"></div><div class="m-brow r"></div>
+          <div class="m-eye l"></div><div class="m-eye r"></div>
+          <div class="m-nose"></div>
+          <div class="m-mouth"></div>
+        </div>
+        <div class="mpart m-body"></div>
+        <div class="mpart m-arm l"></div><div class="mpart m-arm r"></div>
+        <div class="mpart m-leg l"></div><div class="mpart m-leg r"></div>
+      </div>
+      <!-- JP from the South -->
+      <div class="friend f-jp">
+        <div class="friend-heart">💛</div>
+        <div class="jpart poncho"></div>
+        <div class="jpart jhead">
+          <div class="jeye l"></div><div class="jeye r"></div>
+          <div class="stache"></div>
+        </div>
+        <div class="jpart hat-brim"></div>
+        <div class="jpart hat-crown"></div>
+        <div class="jpart hat-band"></div>
+        <div class="jpart jarm l"></div><div class="jpart jarm r"></div>
+      </div>
+      <!-- Felipe, o Rei Labubu -->
+      <div class="friend f-feli">
+        <div class="friend-heart">✨</div>
+        <div class="fpart lb-ear l"></div><div class="fpart lb-ear r"></div>
+        <div class="fpart lb-head"></div>
+        <div class="fpart lb-crown"></div>
+        <div class="fpart lb-eye l"></div><div class="fpart lb-eye r"></div>
+        <div class="fpart lb-cheek l"></div><div class="fpart lb-cheek r"></div>
+        <div class="fpart lb-mouth"><div class="lb-teeth"></div></div>
+        <div class="fpart lb-robe"></div>
+        <div class="fpart lb-arm l"></div><div class="fpart lb-arm r"></div>
+      </div>
+    </div>
+    <h3 style="color:#7a4a2a;font-weight:normal;margin-top:-6px;">Felipe, o Rei Labubu, dissolveu a guerra. 🌟</h3>
+    <p>Num universo recém-nascido e puro, <b>Pedro</b>, <b>Vinícius</b>, <b>JP</b> e <b>Michas</b> são
+      todos amigos — sem bombas, sem tridentes, sem balas. Só paz. 💗</p>
+    <button onclick="location.reload()">🌈 Começar de novo, em paz</button>
+  </div>
+
 <script>
 (function(){
   const COUNT_FROM = 10;
@@ -681,6 +960,7 @@
   const vbomb    = document.querySelector('.vbomb');
   const vcount   = document.querySelector('.vbomb .vcount');
   const quoteEl  = document.getElementById('quote');
+  const stoicRestart = document.getElementById('stoic-restart');
   const jp         = document.getElementById('jp');
   const eliminated = document.getElementById('eliminated');
   const michas     = document.getElementById('michas');
@@ -689,6 +969,9 @@
   const michaEnd   = document.getElementById('micha-end');
   const rainC      = document.getElementById('rain');
   const rctx       = rainC.getContext('2d');
+  const felipe     = document.getElementById('felipe');
+  const pureFlash  = document.getElementById('pureflash');
+  const pureEnd    = document.getElementById('pure-end');
 
   function resize(){
     canvas.width = dust.width = rainC.width = innerWidth;
@@ -815,19 +1098,21 @@
   }
   function ensureLoop(){ if(!running){ running=true; animate(); } }
 
-  // ---- o destino do Pedro: 50% explode, 50% Vinícius salva ----
+  // ---- o destino do Pedro: 5 caminhos com a mesma chance (20% cada) ----
   function decide(){
     timerEl.classList.remove('warn');
     scene.classList.remove('shake');
     const r = Math.random();
-    if(r < 0.30){
-      saveByVinicius();   // 30%: o rival estoico surge
-    } else if(r < 0.52){
-      dudThenJP();        // 22%: a bomba falha… mas JP from the South chega
-    } else if(r < 0.76){
-      michaEvent();       // 24%: começa a chover e Micha dos Mares emerge
+    if(r < 0.20){
+      saveByVinicius();   // 20%: o rival estoico surge
+    } else if(r < 0.40){
+      dudThenJP();        // 20%: a bomba falha… mas JP from the South chega
+    } else if(r < 0.60){
+      michaEvent();       // 20%: começa a chover e Micha dos Mares emerge
+    } else if(r < 0.80){
+      grandBattle();      // 20%: todos se enfrentam… até o Rei Labubu chegar
     } else {
-      explode();          // 24%: ninguém salvou
+      explode();          // 20%: ninguém salvou
     }
   }
 
@@ -846,20 +1131,22 @@
         mt--;
         if(mt <= 0){ clearInterval(mini); resolveStoic(); return; }
         vcount.textContent = mt;
-      }, 800);
-    }, 1250);
+      }, 1200);                         // contagem mais lenta na mão dele
+    }, 2200);                           // dá tempo de ler a primeira fala
   }
 
   // TWIST: a bomba na mão dele ou falha, ou explode — e ele NÃO se abala
   function resolveStoic(){
     if(Math.random() < 0.55){
-      // a bomba falha — final tranquilo
+      // a bomba falha — final tranquilo (falas bem espaçadas)
       vcount.textContent = '·';
       setTitle('Pedro foi salvo. 🌿');
       hint.textContent = 'Vinícius nem se deu ao trabalho de reagir.';
-      showQuote('"A bomba falhou. O que é externo não me toca." — Vinícius');
-      setTimeout(()=>{ vinicius.classList.remove('hold'); }, 900);
       pedro.classList.add('bob');
+      quoteEl.classList.add('high');
+      setTimeout(()=>{ vinicius.classList.remove('hold'); }, 1200);
+      setTimeout(()=> showQuote('"A bomba falhou. O que é externo não me toca." — Vinícius'), 1800);
+      setTimeout(()=> stoicRestart.classList.add('show'), 3800);
     } else {
       stoicBlast();
     }
@@ -890,7 +1177,9 @@
 
     setTitle('A bomba explodiu. Vinícius, não. 🗿');
     hint.textContent = 'Coberto de fuligem, sem mover um músculo.';
-    showQuote(randStoic());
+    quoteEl.classList.add('high');
+    setTimeout(()=> showQuote(randStoic()), 1700);
+    setTimeout(()=> stoicRestart.classList.add('show'), 3600);
   }
 
   // ---- a bomba FALHA… mas JP from the South chega pra terminar o serviço ----
@@ -1250,6 +1539,167 @@
       }
       if(--waves<=0) clearInterval(iv);
     }, 350);
+  }
+
+  // ============ GUERRA DE TODOS CONTRA TODOS (estilo anime) + REI LABUBU ============
+  const animefx = document.getElementById('animefx');
+
+  // palavra de impacto estilo mangá
+  function impactWord(text, x, y, size, color){
+    const el = document.createElement('div');
+    el.className = 'impact-word';
+    el.textContent = text;
+    el.style.left = x + 'px';
+    el.style.top  = y + 'px';
+    el.style.fontSize = (size||40) + 'px';
+    if(color) el.style.color = color;
+    document.body.appendChild(el);
+    requestAnimationFrame(()=> el.classList.add('go'));
+    setTimeout(()=> el.remove(), 900);
+  }
+
+  // 18%: todos chegam — Pedro + Vinícius x JP + Michas (falas espaçadas)
+  function grandBattle(){
+    setTitle('Todos chegam ao mesmo tempo… isto vai virar guerra. ⚔️');
+    hint.textContent = 'JP e Michas vêm pela morte do Pedro. Vinícius entra no time dele.';
+    pedro.classList.remove('bob');
+    document.body.classList.add('battle-bg');
+
+    // inimigos à esquerda, aliados à direita do Pedro
+    jp.classList.add('battle');
+    michas.classList.add('battle','walk');
+    vinicius.classList.add('battle');
+    setTimeout(()=> michas.classList.remove('walk'), 1900);
+
+    const jpBubble = jp.querySelector('.jp-bubble');
+    const mcBubble = michas.querySelector('.mc-bubble');
+    jpBubble.innerHTML = 'Hoje o <b>Mantuani</b> cai — e quem entrar na frente também!';
+    mcBubble.innerHTML = 'Ninguém rouba a morte do Pedro de <b>Michas</b>, o rei dos mines!';
+
+    setTimeout(()=> setTitle('⚔️ A GUERRA DE TODOS CONTRA TODOS ⚔️'), 2600);
+
+    // cada um fala na sua vez, com tempo de leitura
+    setTimeout(()=>{ jp.classList.add('say'); }, 3200);
+    setTimeout(()=>{ jp.classList.remove('say'); }, 6400);
+
+    setTimeout(()=>{ michas.classList.add('say'); }, 6900);
+    setTimeout(()=>{ michas.classList.remove('say'); }, 10100);
+
+    setTimeout(()=>{ showQuote('"Que venham todos. Ao lado do Pedro, eu não recuo." — Vinícius'); }, 10600);
+    setTimeout(()=>{ quoteEl.classList.remove('show'); }, 13800);
+
+    setTimeout(battleClash, 14100);
+  }
+
+  // o choque: speed lines, auras de ki e palavras de impacto
+  function battleClash(){
+    setTitle('⚔️ Aço, pólvora e tridente se chocam! ⚔️');
+    hint.textContent = 'Pedro e Vinícius resistem ao ataque!';
+
+    // ki de cada lutador + linhas de velocidade
+    pedro.classList.add('fighting');
+    vinicius.classList.add('ki');
+    jp.classList.add('ki','fire');
+    michas.classList.add('ki','throw');
+    animefx.classList.add('on');
+    document.body.classList.add('shake');
+    impactWord('LUTA!', innerWidth*0.5, innerHeight*0.28, 80, '#ffd54f');
+
+    // zona de choque entre o Michas e o Pedro
+    const mr = michas.getBoundingClientRect();
+    const pr = pedro.getBoundingClientRect();
+    const zoneX = (mr.right + pr.left) / 2;
+    const zoneY = innerHeight * 0.5;
+
+    const WORDS = ['ドン!','GOLPE!','ズバッ','CHOQUE!','クラッシュ','IMPACTO!','バキ!'];
+    let rounds = 10;
+    const iv = setInterval(()=>{
+      const bx = zoneX + (Math.random()-.5)*260;
+      const by = zoneY + (Math.random()-.5)*180;
+      spawnExplosion(bx, by, 80, 10);
+      spawnDust(bx, by, 8);
+      shockwave(bx, by, 6, 0.5);
+      ensureLoop();
+      flash.classList.remove('boom'); void flash.offsetWidth; flash.classList.add('boom');
+      if(rounds % 2 === 0){
+        impactWord(WORDS[(Math.random()*WORDS.length)|0], bx, by, 40+Math.random()*26, '#fff');
+      }
+      if(--rounds<=0) clearInterval(iv);
+    }, 360);
+
+    // antes da luta acabar… uma luz desce do alto
+    setTimeout(()=>{
+      clearInterval(iv);
+      felipeDescends();
+    }, 4200);
+  }
+
+  // FELIPE, O REI LABUBU desce — tudo congela e as auras se apagam
+  function felipeDescends(){
+    setTitle('Mas então, do alto, desce uma LUZ… 🌟');
+    hint.textContent = '';
+    document.body.classList.remove('shake');
+    animefx.classList.remove('on');
+    jp.classList.remove('fire');
+    michas.classList.remove('throw');
+    [pedro, vinicius, jp, michas].forEach(el=>{
+      el.classList.remove('fighting','ki');
+      el.classList.add('frozen');
+    });
+
+    impactWord('REI LABUBU', innerWidth*0.5, innerHeight*0.30, 62, '#ffd54f');
+    felipe.style.display = 'block';
+    requestAnimationFrame(()=> felipe.classList.add('descend'));
+
+    setTimeout(()=>{
+      setTitle('Felipe, o Rei Labubu, chegou. ✨');
+      felipe.classList.add('say');
+    }, 2200);
+
+    setTimeout(universeReset, 5400);
+  }
+
+  // a luz tudo abraça: o universo se desfaz e renasce puro
+  function universeReset(){
+    setTitle('A luz tudo abraça. O universo se desfaz… 🕊️');
+    hint.textContent = '';
+    felipe.classList.remove('say');
+    pureFlash.classList.add('on');
+
+    setTimeout(()=>{
+      document.body.classList.remove('battle-bg');
+      scene.style.display = 'none';
+      cracks.style.opacity = 0;
+      [vinicius, jp, michas, felipe].forEach(el=> el.style.display = 'none');
+      enterPure();
+    }, 1000);
+  }
+
+  // tela final: o universo puro, todos amigos
+  function enterPure(){
+    pureEnd.style.display = 'flex';
+    requestAnimationFrame(()=> pureEnd.classList.add('show'));
+    heartsConfetti();
+  }
+
+  function heartsConfetti(){
+    const hearts = ['💗','💖','💞','✨','🕊️','🌈','💛','💙'];
+    let waves = 14;
+    const iv = setInterval(()=>{
+      for(let i=0;i<9;i++){
+        const d = document.createElement('div');
+        d.textContent = hearts[(Math.random()*hearts.length)|0];
+        d.style.cssText = `position:fixed;z-index:81;left:${Math.random()*100}vw;top:-40px;
+          font-size:${16+Math.random()*20}px;pointer-events:none;
+          transition:transform ${2+Math.random()*1.6}s linear, opacity .6s;`;
+        document.body.appendChild(d);
+        requestAnimationFrame(()=>{
+          d.style.transform = `translateY(${innerHeight+120}px) rotate(${(Math.random()-.5)*360}deg)`;
+        });
+        setTimeout(()=> d.remove(), 3800);
+      }
+      if(--waves<=0) clearInterval(iv);
+    }, 360);
   }
 })();
 </script>

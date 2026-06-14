@@ -557,6 +557,19 @@
     filter: drop-shadow(0 0 26px rgba(255,224,138,.95));
   }
   #felipe.descend{ transform: translate(-50%,-104%); }   /* paira acima do centro */
+  /* faixa de anúncio: fica SEMPRE à frente do Rei Labubu (z acima de 58) */
+  #descend-banner{
+    position:fixed; left:50%; top:3.5%; transform:translate(-50%,-14px) scale(.86);
+    z-index:61; pointer-events:none; opacity:0; text-align:center; max-width:92vw;
+    color:#fff6d6; font-size:clamp(26px,5.2vw,50px); font-weight:900; letter-spacing:1.5px;
+    text-shadow:0 0 16px rgba(255,222,120,.95), 0 0 38px rgba(255,180,40,.7), 0 4px 12px rgba(0,0,0,.6);
+    transition:opacity .55s ease, transform .65s cubic-bezier(.2,.8,.3,1.25);
+  }
+  #descend-banner.show{ opacity:1; transform:translate(-50%,0) scale(1); animation:bannerPulse 1.8s ease-in-out infinite; }
+  @keyframes bannerPulse{
+    0%,100%{ text-shadow:0 0 16px rgba(255,222,120,.95), 0 0 38px rgba(255,180,40,.7), 0 4px 12px rgba(0,0,0,.6); }
+    50%{ text-shadow:0 0 26px rgba(255,236,160,1), 0 0 60px rgba(255,196,60,.95), 0 4px 14px rgba(0,0,0,.6); }
+  }
   .fpart{ position:absolute; }
   /* aura sagrada / ki dourado do rei */
   .f-aura{
@@ -649,6 +662,8 @@
     background:linear-gradient(#ffd27d,#f0890c); color:#fff; border:none; border-radius:12px;
     cursor:pointer; box-shadow:0 4px 0 #b8560a; }
   #pure-end button:active{ transform:translateY(3px); box-shadow:0 1px 0 #b8560a; }
+  /* título, textos e botão sempre à frente das figuras (o Rei não cobre nenhum texto) */
+  #pure-end h2, #pure-end h3, #pure-end p, #pure-end button{ position:relative; z-index:10; }
 
   /* fileira de amigos (reaproveita as figuras CSS de cada personagem) */
   .friend-row{ display:flex; align-items:flex-end; justify-content:center; gap:22px;
@@ -667,6 +682,80 @@
     border:none; border-bottom:4px solid #7a3e10; border-radius:0 0 24px 24px; }
   .friend.f-mich .m-mouth{ width:26px; height:10px; background:transparent;
     border-bottom:5px solid #5b3a1e; border-radius:0 0 18px 18px; }
+
+  /* ============ SEQUÊNCIA SECRETA: A TRAIÇÃO DO REI LABUBU ============ */
+  /* fumaça maligna avermelhada — partículas suaves no canvas (estilo da poeira/nuvem do jogo) */
+  #smokefx{ position:fixed; inset:0; z-index:84; pointer-events:none; }
+
+  /* tom sombrio: o fundo vai ficando avermelhado depois que os olhos brilham */
+  #eviltint{ position:fixed; inset:0; z-index:88; pointer-events:none; opacity:0;
+    background:radial-gradient(ellipse at 50% 58%, rgba(120,0,0,.22) 0%, rgba(80,0,0,.55) 55%, rgba(18,0,0,.82) 100%);
+    transition:opacity 3s ease-in; }
+  #eviltint.on{ opacity:1; }
+
+  /* olhos do Rei Labubu (e dos lacaios) piscando em vermelho maligno */
+  .evil-eyes .lb-eye, .minion .lb-eye{ border-color:#5a0000 !important; animation: evilEye .45s infinite alternate; }
+  .evil-eyes .lb-eye::after, .minion .lb-eye::after{ opacity:0; }
+  @keyframes evilEye{
+    from{ background:radial-gradient(circle at 40% 34%, #ff6b6b, #8a0000 72%); box-shadow:0 0 5px #ff1a1a; }
+    to{ background:radial-gradient(circle at 40% 34%, #ff3b3b, #ff0000 72%); box-shadow:0 0 16px #ff0000, 0 0 30px #ff5b5b; }
+  }
+
+  /* seguidores Labubu (lacaios) — sobem de baixo da tela */
+  .minion{ position:fixed; bottom:-190px; left:0; width:150px; height:150px; z-index:85;
+    transform:translate(-50%,0) scale(var(--s,.34)); transform-origin:center bottom;
+    transition:bottom 1.5s cubic-bezier(.2,.7,.3,1); pointer-events:none; }
+  .minion.rise{ bottom:var(--rise,40%); }
+  .minion.lunge{ animation: minionLunge .45s ease-in-out infinite; }
+  @keyframes minionLunge{
+    0%,100%{ transform:translate(-50%,0) scale(var(--s,.34)); }
+    50%{ transform:translate(-50%,-14px) scale(calc(var(--s,.34) * 1.06)); }
+  }
+
+  /* balão de fala SOMBRIO do Rei Labubu, com sangue escorrendo */
+  #labubu-bubble{ position:fixed; top:15%; left:50%; transform:translate(-50%,10px) scale(.9);
+    white-space:normal; width:max-content; max-width:80vw; text-align:center; line-height:1.35;
+    font-size:clamp(14px,2.5vw,19px); z-index:92;
+    background:linear-gradient(#2a0008,#120004); color:#ff9a9a; border:1px solid #7a0c20;
+    text-shadow:0 0 6px rgba(255,0,0,.5);
+    box-shadow:0 0 20px rgba(170,0,0,.55), 0 6px 18px rgba(0,0,0,.6); }
+  #labubu-bubble b{ color:#ff2a2a; text-shadow:0 0 8px rgba(255,0,0,.8); }
+  #labubu-bubble::after{ border-top-color:#120004; }   /* bico do balão acompanha o tom escuro */
+  #labubu-bubble.show{ opacity:1; transform:translate(-50%,0) scale(1); }
+
+  /* quando os olhos acendem: o texto abaixo do Rei se desfaz, letra por letra, fora de ordem */
+  .shatter span{ display:inline-block; white-space:pre; }
+  @keyframes letterFall{
+    to{ transform:translate(var(--dx,0px), 100vh) rotate(var(--rot,0deg)); opacity:0; }
+  }
+  /* o título corrompido */
+  #pure-end h2.impure{ color:#ff2a2a;
+    text-shadow:0 0 18px rgba(255,0,0,.8), 0 3px 8px rgba(80,0,0,.6); }
+
+  /* eliminação das figuras (mesmo espírito do pedroFall: tomba e escurece) */
+  .friend.slain{ animation: slain 1s cubic-bezier(.3,.6,.4,1) forwards; transform-origin:bottom center; }
+  @keyframes slain{
+    0%{ transform:translateY(0) rotate(0); filter:none; }
+    16%{ transform:translateY(-8px) rotate(4deg); }
+    100%{ transform:translate(12px,48px) rotate(85deg); filter:grayscale(1) brightness(.26); opacity:.18; }
+  }
+
+  /* tela final: o reino dos Labubus */
+  #labubu-takeover{
+    position:fixed; inset:0; display:none; flex-direction:column;
+    align-items:center; justify-content:center; gap:16px;
+    background:radial-gradient(ellipse at 50% 38%, #2a0008 0%, #14000a 60%, #050007 100%);
+    z-index:96; color:#ffb3b3; text-align:center; padding:20px; opacity:0; transition:opacity 1s;
+  }
+  #labubu-takeover.show{ opacity:1; }
+  #labubu-takeover h2{ font-size:clamp(26px,6vw,56px); color:#ff2a2a; letter-spacing:2px;
+    text-shadow:0 0 18px rgba(255,0,0,.7), 0 0 42px rgba(120,0,0,.6); }
+  #labubu-takeover p{ color:#e09a9a; font-size:16px; max-width:540px; line-height:1.5; }
+  #labubu-takeover p b{ color:#ff6b6b; }
+  #labubu-takeover button{ margin-top:8px; padding:12px 26px; font-size:16px; font-weight:bold;
+    background:#7a0c20; color:#fff; border:none; border-radius:10px; cursor:pointer; box-shadow:0 4px 0 #4a0010; }
+  #labubu-takeover button:active{ transform:translateY(3px); box-shadow:0 1px 0 #4a0010; }
+  .takeover-stage{ transform:scale(.82); margin-bottom:-4px; }
 </style>
 </head>
 <body>
@@ -848,7 +937,7 @@
 
   <!-- FELIPE, O REI LABUBU: desce do alto e reseta o universo -->
   <div id="felipe">
-    <div class="fname">Felipe, o Rei Labubu</div>
+    <div class="fname">Rei Labubu</div>
     <div class="f-aura"></div>
     <div class="fpart lb-ear l"></div><div class="fpart lb-ear r"></div>
     <div class="fpart lb-head"></div>
@@ -860,6 +949,9 @@
     <div class="fpart lb-arm l"></div><div class="fpart lb-arm r"></div>
     <div class="f-bubble">Esta guerra acaba <b>agora</b>. Que o universo renasça! ✨</div>
   </div>
+
+  <!-- faixa de anúncio da chegada do Rei Labubu (sempre à frente dele) -->
+  <div id="descend-banner"></div>
 
   <!-- clarão sagrado do reset -->
   <div id="pureflash"></div>
@@ -932,10 +1024,38 @@
         <div class="fpart lb-arm l"></div><div class="fpart lb-arm r"></div>
       </div>
     </div>
-    <h3 style="color:#7a4a2a;font-weight:normal;margin-top:-6px;">Felipe, o Rei Labubu, dissolveu a guerra. 🌟</h3>
+    <h3 style="color:#7a4a2a;font-weight:normal;margin-top:-6px;">O Rei Labubu dissolveu a guerra. 🌟</h3>
     <p>Num universo recém-nascido e puro, <b>Pedro</b>, <b>Vinícius</b>, <b>JP</b> e <b>Michas</b> são
       todos amigos — sem bombas, sem tridentes, sem balas. Só paz. 💗</p>
-    <button onclick="location.reload()">🌈 Começar de novo, em paz</button>
+    <button id="pure-restart">🌈 Começar de novo, em paz</button>
+  </div>
+
+  <!-- fumaça maligna que sobe (sequência secreta do Rei Labubu) -->
+  <canvas id="smokefx"></canvas>
+  <!-- tom sombrio avermelhado do fundo -->
+  <div id="eviltint"></div>
+
+  <!-- balão de fala do Rei Labubu (mesmo sistema dos outros) -->
+  <div id="labubu-bubble" class="f-bubble"></div>
+
+  <!-- TELA FINAL: o reino dos Labubus -->
+  <div id="labubu-takeover">
+    <div class="takeover-stage">
+      <div class="friend f-feli evil-eyes">
+        <div class="fpart lb-ear l"></div><div class="fpart lb-ear r"></div>
+        <div class="fpart lb-head"></div>
+        <div class="fpart lb-crown"></div>
+        <div class="fpart lb-eye l"></div><div class="fpart lb-eye r"></div>
+        <div class="fpart lb-cheek l"></div><div class="fpart lb-cheek r"></div>
+        <div class="fpart lb-mouth"><div class="lb-teeth"></div></div>
+        <div class="fpart lb-robe"></div>
+        <div class="fpart lb-arm l"></div><div class="fpart lb-arm r"></div>
+      </div>
+    </div>
+    <h2>👑 O REINO DOS LABUBUS 👑</h2>
+    <p>A paz era uma <b>armadilha</b>. O Rei Labubu e seus seguidores tomaram o universo —
+      e o Pedro caiu na ratoeira.</p>
+    <button onclick="location.reload()">😈 Recomeçar</button>
   </div>
 
 <script>
@@ -955,6 +1075,7 @@
   const dctx      = dust.getContext('2d');
 
   const title    = document.getElementById('title');
+  const descendBanner = document.getElementById('descend-banner');
   const hint     = document.getElementById('hint');
   const vinicius = document.getElementById('vinicius');
   const vbomb    = document.querySelector('.vbomb');
@@ -1636,7 +1757,9 @@
 
   // FELIPE, O REI LABUBU desce — tudo congela e as auras se apagam
   function felipeDescends(){
-    setTitle('Mas então, do alto, desce uma LUZ… 🌟');
+    setTitle('');
+    descendBanner.textContent = 'Mas então, do alto, desce uma LUZ… 🌟';
+    descendBanner.classList.add('show');
     hint.textContent = '';
     document.body.classList.remove('shake');
     animefx.classList.remove('on');
@@ -1652,7 +1775,7 @@
     requestAnimationFrame(()=> felipe.classList.add('descend'));
 
     setTimeout(()=>{
-      setTitle('Felipe, o Rei Labubu, chegou. ✨');
+      descendBanner.textContent = 'O Rei Labubu chegou. ✨';
       felipe.classList.add('say');
     }, 2200);
 
@@ -1661,18 +1784,22 @@
 
   // a luz tudo abraça: o universo se desfaz e renasce puro
   function universeReset(){
-    setTitle('A luz tudo abraça. O universo se desfaz… 🕊️');
+    descendBanner.textContent = 'A luz tudo abraça. O universo se desfaz… 🕊️';
+    setTitle('');
     hint.textContent = '';
     felipe.classList.remove('say');
-    pureFlash.classList.add('on');
+
+    // deixa a última fala do Rei aparecer por mais tempo antes do clarão/reset
+    setTimeout(()=> pureFlash.classList.add('on'), 2600);
 
     setTimeout(()=>{
       document.body.classList.remove('battle-bg');
       scene.style.display = 'none';
       cracks.style.opacity = 0;
       [vinicius, jp, michas, felipe].forEach(el=> el.style.display = 'none');
+      descendBanner.classList.remove('show');
       enterPure();
-    }, 1000);
+    }, 3600);
   }
 
   // tela final: o universo puro, todos amigos
@@ -1700,6 +1827,187 @@
       }
       if(--waves<=0) clearInterval(iv);
     }, 360);
+  }
+
+  // ============ SEQUÊNCIA SECRETA: A TRAIÇÃO DO REI LABUBU ============
+  const eviltint     = document.getElementById('eviltint');
+  const labubuBubble = document.getElementById('labubu-bubble');
+  const takeover     = document.getElementById('labubu-takeover');
+  const pureBtn      = pureEnd.querySelector('button');
+  const smokeC       = document.getElementById('smokefx');
+  const smctx        = smokeC.getContext('2d');
+  let secretArmed = true;          // FASE 1: arma a falsa saída (desarme p/ ignorar)
+  let minions = [];
+  // estado da fumaça maligna (mesma técnica suave da poeira do jogo, mas avermelhada)
+  let smokeParts = [], smokeActive = false, smokeStart = 0, smokeRAF = false, smokeDur = 3000, smokeCeil = 0;
+
+  // intercepta o clique SEM remover/substituir o elemento
+  pureBtn.addEventListener('click', ()=>{
+    if(secretArmed){ secretArmed = false; pureBtn.disabled = true; labubuBetrayal(); }
+    else { location.reload(); }    // comportamento normal preservado
+  });
+
+  // FASE 2: fumaça maligna sobe suavemente de baixo até logo abaixo do Rei
+  function startEvilSmoke(dur){
+    smokeC.width = innerWidth; smokeC.height = innerHeight;
+    smokeDur = dur || 3000;
+    smokeCeil = innerHeight * 0.56;     // não sobe além disso (logo abaixo do Rei)
+    smokeActive = true; smokeStart = performance.now();
+    if(!smokeRAF){ smokeRAF = true; smokeTick(); }
+  }
+  function stopEvilSmoke(){ smokeActive = false; }   // deixa o que resta dissipar e limpa
+  function smokeTick(){
+    smctx.clearRect(0,0,smokeC.width,smokeC.height);
+    const inten = smokeActive ? Math.min(1,(performance.now()-smokeStart)/smokeDur) : 0;
+    if(smokeActive){
+      const n = Math.ceil(inten*5);
+      for(let i=0;i<n;i++){
+        const tone = (Math.random()*55)|0;
+        smokeParts.push({
+          x:Math.random()*smokeC.width, y:smokeC.height + 30,
+          vx:(Math.random()-.5)*0.5, vy:-(0.35 + Math.random()*0.95),
+          r:55 + Math.random()*100, grow:0.25 + Math.random()*0.55,
+          life:1, decay:0.0022 + Math.random()*0.0035, tone
+        });
+      }
+    }
+    for(const p of smokeParts){
+      p.x += p.vx; p.y += p.vy; p.r += p.grow;
+      if(p.y < smokeCeil) p.life -= p.decay*4;   // dissipa ao passar do teto
+      p.life -= p.decay;
+      if(p.life<=0) continue;
+      const al = Math.max(0,p.life)*0.32 * Math.max(inten,0.15);
+      const grd = smctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
+      grd.addColorStop(0, `rgba(${135+p.tone},${12+(p.tone>>2)},34,${al})`);
+      grd.addColorStop(1, 'rgba(40,0,12,0)');
+      smctx.fillStyle = grd;
+      smctx.beginPath(); smctx.arc(p.x,p.y,p.r,0,Math.PI*2); smctx.fill();
+    }
+    smokeParts = smokeParts.filter(p=>p.life>0 && p.y > smokeCeil - 140);
+    if(smokeActive || smokeParts.length){ requestAnimationFrame(smokeTick); }
+    else { smokeRAF=false; smctx.clearRect(0,0,smokeC.width,smokeC.height); }
+  }
+
+  // FASE 3: desfaz um texto em letras que caem fora de ordem
+  function shatterFall(el){
+    const text = el.textContent;
+    el.textContent = '';
+    el.classList.add('shatter');
+    for(const ch of text){
+      const s = document.createElement('span');
+      s.textContent = ch;
+      s.style.setProperty('--dx', (((Math.random()-.5)*140)|0) + 'px');
+      s.style.setProperty('--rot', (((Math.random()-.5)*160)|0) + 'deg');
+      s.style.animation = 'letterFall 1.1s cubic-bezier(.4,.1,.7,1) forwards';
+      s.style.animationDelay = (Math.random()*1.8).toFixed(2) + 's';   // fora de ordem
+      el.appendChild(s);
+    }
+  }
+
+  // FASE 4: cria a HORDA de seguidores Labubu, em várias alturas, cobrindo a base
+  function spawnMinions(n, riseMax, riseDur, spread){
+    for(let i=0;i<n;i++){
+      const depth = Math.pow(Math.random(), 2);          // viés p/ frente: a maioria fica na frente da névoa
+      const rise  = 4 + depth * (riseMax - 4);           // 0 = frente/maior, 1 = fundo/menor
+      const m = document.createElement('div');
+      m.className = 'minion';
+      m.innerHTML =
+        '<div class="fpart lb-ear l"></div><div class="fpart lb-ear r"></div>'+
+        '<div class="fpart lb-head"></div>'+
+        '<div class="fpart lb-eye l"></div><div class="fpart lb-eye r"></div>'+
+        '<div class="fpart lb-mouth"><div class="lb-teeth"></div></div>';
+      m.style.left = ((i + 0.5) / n * 100 + (Math.random()-.5)*(190/n)).toFixed(1) + 'vw';
+      m.style.setProperty('--s', (0.5 - depth*0.27).toFixed(2));
+      m.style.setProperty('--rise', rise.toFixed(0) + '%');
+      m.style.zIndex = 80 + Math.round((1 - depth) * 7); // mais à frente = z maior (abaixo da fumaça/tint)
+      m.style.transitionDuration = (riseDur || 1500) + 'ms';                       // chegam devagar
+      m.style.transitionDelay = (Math.random()*(spread || 700)).toFixed(0) + 'ms'; // aos poucos, espalhados
+      document.body.appendChild(m);
+      minions.push(m);
+      void m.offsetHeight;           // força o estado inicial (lá embaixo) p/ a transição disparar
+      m.classList.add('rise');       // sobem de baixo para cima
+    }
+  }
+
+  // FASE 5: fala do Rei Labubu (mesmo sistema de balões dos outros eventos)
+  function labubuSay(html){
+    if(html){ labubuBubble.innerHTML = html; labubuBubble.classList.add('show'); }
+    else { labubuBubble.classList.remove('show'); }
+  }
+
+  // FASES 2→6 da sequência secreta
+  function labubuBetrayal(){
+    // --- timings configuráveis ---
+    const T_SHAKE       = 0;      // FASE 2: tremor leve da "câmera"
+    const T_SMOKE       = 300;    // FASE 2: fumaça maligna começa a subir
+    const SMOKE_DUR     = 2600;   // tempo da fumaça subir até logo abaixo do Rei
+    const T_EYES        = 3200;   // FASE 3: olhos do Rei + título corrompe + letras começam a cair
+    const T_TINT        = 3700;   // fundo vai ficando avermelhado/sombrio (após os olhos)
+    const T_MINIONS     = 3900;   // FASE 4: a horda começa a chegar (enquanto as letras ainda caem)
+    const MINION_N      = 45;     // HORDA de lacaios (a maioria na frente da névoa)
+    const MINION_RISE   = 42;     // % do fundo até onde a horda sobe (várias camadas)
+    const RISE_DUR      = 2600;   // subida lenta de cada lacaio
+    const RISE_SPREAD   = 3400;   // chegam aos poucos, bem espalhados no tempo
+    const T_SPEECH1     = 7400;   // FASE 5: fala 1 (depois de boa parte da horda já ter chegado)
+    const T_SPEECH1_OFF = 10200;  // fala 1 some
+    const T_SPEECH2     = 10600;  // fala 2 aparece
+    const T_SPEECH2_OFF = 13400;  // fala 2 some
+    const T_ELIM        = 13600;  // FASE 6: eliminação geral
+    const ELIM_GAP      = 380;    // intervalo entre cada eliminação
+    const T_END         = 16400;  // tela final
+
+    const kingFig   = pureEnd.querySelector('.f-feli');
+    const pureTitle = pureEnd.querySelector('h2');
+    const pureTexts = pureEnd.querySelectorAll('h3, p');   // texto abaixo do Rei
+    // partículas/ondas precisam aparecer acima da tela final durante a sequência
+    canvas.style.zIndex = 95; shock.style.zIndex = 94;
+
+    // FASE 2: tremor leve + fumaça maligna subindo suavemente de baixo
+    setTimeout(()=> document.body.classList.add('shake'), T_SHAKE);
+    setTimeout(()=> startEvilSmoke(SMOKE_DUR), T_SMOKE);
+    // o balançar da tela dura só até a névoa terminar de surgir
+    setTimeout(()=> document.body.classList.remove('shake'), T_SMOKE + SMOKE_DUR);
+
+    // FASE 3: olhos do Rei acendem → o título corrompe e o texto cai letra por letra
+    setTimeout(()=>{
+      if(kingFig) kingFig.classList.add('evil-eyes');
+      pureTitle.textContent = '☠️ UNIVERSO IMPURO ☠️';
+      pureTitle.classList.add('impure');
+      pureTexts.forEach(el=> shatterFall(el));
+    }, T_EYES);
+
+    // depois dos olhos: o fundo vai ficando avermelhado e sombrio
+    setTimeout(()=> eviltint.classList.add('on'), T_TINT);
+
+    // FASE 4: invasão dos seguidores, chegando devagar e aos poucos
+    setTimeout(()=> spawnMinions(MINION_N, MINION_RISE, RISE_DUR, RISE_SPREAD), T_MINIONS);
+
+    // FASE 5: falas do Rei Labubu, em sequência
+    setTimeout(()=> labubuSay('TOLOS!!! vocês caíram em minha <b>armadilha</b>'), T_SPEECH1);
+    setTimeout(()=> labubuSay(''), T_SPEECH1_OFF);
+    setTimeout(()=> labubuSay('como um <b>Pedro</b> em uma ratoeira'), T_SPEECH2);
+    setTimeout(()=> labubuSay(''), T_SPEECH2_OFF);
+
+    // FASE 6: os lacaios eliminam os outros personagens, um a um (sem balançar a tela)
+    setTimeout(()=>{
+      minions.forEach(m=> m.classList.add('lunge'));
+      const victims = pureEnd.querySelectorAll('.f-pedro, .f-vini, .f-mich, .f-jp');
+      victims.forEach((v,i)=> setTimeout(()=>{
+        v.classList.add('slain');
+        const r = v.getBoundingClientRect();
+        const cx = r.left + r.width/2, cy = r.top + r.height/2;
+        spawnExplosion(cx, cy, 70, 9);
+        shockwave(cx, cy, 5, 0.5);
+        ensureLoop();
+      }, i*ELIM_GAP));
+    }, T_ELIM);
+
+    // FIM: tela do reino dos Labubus (padrão das outras telas finais)
+    setTimeout(()=>{
+      stopEvilSmoke();
+      takeover.style.display = 'flex';
+      requestAnimationFrame(()=> takeover.classList.add('show'));
+    }, T_END);
   }
 })();
 </script>

@@ -68,7 +68,7 @@ O **rei dos mines**, com a cara do Steve do Minecraft — tudo desenhado em CSS,
 4. **Ataque** — Michas arremessa o tridente, que voa girando até o Pedro; no impacto, um **raio** cai do topo da tela (flash branco + zigue-zague amarelo/branco animado) e o Pedro **leva o dano**.
 5. **Tela final** — fade para um desfecho próprio em **azul-escuro, verde e dourado** (clima Minecraft), com a sprite do Michas, o tridente decorativo e **confete de diamantes e pixels** caindo.
 
-## ⚔️ A Guerra de Todos Contra Todos + 👑 Felipe, o Rei Labubu
+## ⚔️ A Guerra de Todos Contra Todos + 👑 Rei Labubu
 
 O grande crossover. **Todos** os personagens chegam ao mesmo tempo e a coisa vira guerra: **JP** e **Michas** vêm pela morte do Pedro, e o **Vinícius** se junta ao Pedro pra enfrentá-los — inimigos à esquerda, aliados à direita, cada um falando na sua vez.
 
@@ -79,9 +79,21 @@ Então começa o combate, com tudo que um bom **embate de anime** tem direito:
 - **palavras de impacto** explodindo no choque (`ドン!`, `GOLPE!`, `クラッシュ`, `IMPACTO!`…);
 - fundo escuro e dramático, tela tremendo, partículas pra todo lado.
 
-Mas, antes da luta acabar, uma **luz desce do alto**: **Felipe, o Rei Labubu** — orelhas pontudas, dentinhos serrilhados e coroa dourada, tudo em CSS. Ele congela a batalha e **reseta o universo**.
+Mas, antes da luta acabar, uma **luz desce do alto**: o **Rei Labubu** — orelhas pontudas, dentinhos serrilhados e coroa dourada, tudo em CSS. Ele congela a batalha e **reseta o universo**.
 
 No lugar do caos nasce um **Universo Puro**: num amanhecer épico, **Pedro, Vinícius, JP e Michas** reaparecem lado a lado, agora **todos amigos** — sem bombas, sem tridentes, sem balas. Só paz (e confete de corações). 💗
+
+### 🩸 …mas há um segredo
+
+A tela do Universo Puro tem um **botão de recomeçar**. Só que clicar nele não recomeça nada — ele dispara uma **sequência secreta de traição**:
+
+- a tela **treme** e uma **névoa maligna avermelhada** sobe de baixo pra cima;
+- os **olhos do Rei Labubu acendem em vermelho**, o título vira **☠️ UNIVERSO IMPURO ☠️** e as letras dos textos **despencam da tela, uma a uma**;
+- o fundo escurece e fica sangrento enquanto **dezenas de lacaios Labubu** sobem do chão;
+- o Rei revela o golpe — *"TOLOS!!! vocês caíram em minha **armadilha**"* … *"como um Pedro em uma ratoeira"*;
+- os lacaios **eliminam** os antigos amigos e a tela final anuncia o **👑 O REINO DOS LABUBUS 👑**.
+
+> 🤫 Descubra sozinho. (Ou clique no botão e aceite o seu destino.)
 
 ## 🪙 CRIPTÆON, o Ser-Criptomoeda
 

@@ -59,12 +59,15 @@ Aos 0s, `Math.random()` ramifica em cinco caminhos com a **mesma chance (20% cad
 - Funções de desfecho por personagem (`saveByVinicius`, `dudThenJP`, `jpFinishes`, `explode`).
 - Micha dos Mares: chuva (`startRain`/`stopRain`/`rainTick`), `michaEvent` (fases 1-3), `michaThrow` (fase 4), `lightningStrike` + `drawBolt`, `michaFinal` + `pixelConfetti` (fase 5).
 - Guerra final (anime): `impactWord` (palavra de impacto mangá), `grandBattle` (chegada + falas espaçadas), `battleClash` (speed lines, auras de ki, palavras de impacto), `felipeDescends` (Rei Labubu desce, tudo congela), `universeReset` (clarão + troca de tela), `enterPure` + `heartsConfetti` (tela "Universo Puro").
+  - A chegada do Rei usa uma **faixa de anúncio própria** (`#descend-banner`, fixed, z-index 61) em vez do `#title` da `#scene`: como `#scene` é `position:fixed` (cria stacking context), o `#title` ficaria preso **abaixo** do `#felipe` (z58). A faixa fica sempre à frente do Rei e some no `enterPure`. A última fala (`universeReset`) segura mais tempo antes do clarão (`pureFlash` aos 2600ms, troca de tela aos 3600ms).
+- **Sequência secreta (traição do Rei Labubu):** o botão "Recomeçar" da tela "Universo Puro" (`#pure-restart`) é **interceptado** (sem remover o elemento; guard `secretArmed`, fallback `location.reload()`). `labubuBetrayal()` roda 6 fases com **timings em constantes no topo**: tremor (`shake`, só até a névoa terminar) + **névoa maligna avermelhada** subindo de baixo pra cima em `<canvas>` (`#smokefx`, `startEvilSmoke`/`smokeTick`/`stopEvilSmoke`, estética da poeira/chuva mas vermelha) → olhos vermelhos do Rei (`.evil-eyes .lb-eye`), título vira **"☠️ UNIVERSO IMPURO ☠️"** (`.impure`) e os textos **caem letra a letra fora de ordem** (`shatterFall` → `@keyframes letterFall`) + fundo escurecendo/sangrento (`#eviltint.on`) → invasão de ~45 lacaios subindo do chão (`spawnMinions`, `.minion` reaproveita as partes `.lb-*`, maioria na frente da névoa via viés `Math.pow(rand,2)`) → 2 falas (`labubuSay` via balão sombrio `#labubu-bubble`, começa com "TOLOS…") → eliminação dos outros (`.slain` + partículas) → tela final `#labubu-takeover`. Durante a sequência o `#fx`/`#shock` sobem de z-index para as partículas aparecerem acima da tela final.
 
 ## Camadas (z-index) — referência rápida
 
 dust(45) · animefx/speed-lines(46) · rain(47) · flash(40) · shock(48) · partículas fx(50) · vinicius(52) · jp(53) ·
-michas(54) · cracks(55) · fly-trident(56) · bolt/raio(57) · felipe(58) · impact-word(59) · destroyed(60) · quote(62) ·
-eliminated(70) · micha-end(72) · pureflash(78) · pure-end(79) · galaxy(80) · corações do reset(81)
+michas(54) · cracks(55) · fly-trident(56) · bolt/raio(57) · felipe(58) · impact-word(59) · destroyed(60) ·
+descend-banner(61) · quote(62) · eliminated(70) · micha-end(72) · pureflash(78) · pure-end(79) · galaxy(80) ·
+corações do reset(81) · [sequência secreta] smokefx(84) · minions(85) · eviltint(88) · labubu-bubble(92) · labubu-takeover(96)
 
 ## Convenções
 
